@@ -17,13 +17,20 @@ struct NewTraningView: View {
                                 .fill(.red)
                                 .frame(width: UIScreen.main.bounds.width,
                                        height: UIScreen.main.bounds.height)
-                            Rectangle()
-                                .fill(.orange)
+                            
+                            TraningMapView()
                                 .frame(width: UIScreen.main.bounds.width,
                                        height: UIScreen.main.bounds.height)
+                            
+//                            Rectangle()
+//                                .fill(.orange)
+//                                .frame(width: UIScreen.main.bounds.width,
+//                                       height: UIScreen.main.bounds.height)
                         }
                         .scrollTargetLayout()
                     }
+                    .layoutDirectionBehavior(.fixed)
+                    .flipsForRightToLeftLayoutDirection(true)
                     .scrollTargetBehavior(.viewAligned)
                     .ignoresSafeArea()
                     .onScrollPhaseChange { oldPhase, newPhase, context in
