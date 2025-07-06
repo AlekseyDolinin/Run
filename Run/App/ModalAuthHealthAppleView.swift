@@ -1,7 +1,7 @@
 import SwiftUI
 import Voyager
 
-struct ModalAuthHealthApple: View {
+struct ModalAuthHealthAppleView: View {
     
     @EnvironmentObject var router: Router<AppRoute>
         
@@ -39,5 +39,5 @@ struct ModalAuthHealthApple: View {
 }
 
 #Preview {
-    ModalAuthHealthApple()
+    ModalAuthHealthAppleView()
 }

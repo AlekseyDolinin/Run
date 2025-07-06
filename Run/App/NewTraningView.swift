@@ -1,7 +1,7 @@
 import SwiftUI
 import Voyager
 
-struct NewTraning: View {
+struct NewTraningView: View {
     
     @EnvironmentObject var router: Router<AppRoute>
     @State private var vm = ViewModel()
@@ -54,11 +54,11 @@ struct NewTraning: View {
 }
 
 #Preview {
-    NewTraning()
+    NewTraningView()
 }
 
 
-extension NewTraning {
+extension NewTraningView {
     
     @Observable
     class ViewModel {

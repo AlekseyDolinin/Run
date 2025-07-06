@@ -32,7 +32,7 @@ struct ContentView: View {
             case .main:
                 MainView()
             case .newTraning:
-                NewTraning()
+                NewTraningView()
             }
         } tabItem: { route in
             switch route {

@@ -1,7 +1,7 @@
 import SwiftUI
 import Voyager
 
-struct SettingTraning: View {
+struct SettingTraningView: View {
     
     @EnvironmentObject var router: Router<AppRoute>
     
@@ -11,7 +11,7 @@ struct SettingTraning: View {
         ZStack {
             AppTheme.bg_one
             VStack(alignment: .center, spacing: 0) {
-                TopBarModal(onlyBack: true)
+//                TopBarModal(onlyBack: true)
                 ScrollView {
                     VStack(alignment: .center, spacing: 16) {
                         Rectangle()
@@ -32,5 +32,5 @@ struct SettingTraning: View {
 }
 
 #Preview {
-    SettingTraning()
+    SettingTraningView()
 }
