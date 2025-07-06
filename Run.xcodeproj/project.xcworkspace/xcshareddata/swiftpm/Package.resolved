@@ -1,0 +1,15 @@
+{
+  "originHash" : "cb1af634f5c43a95d71885147429a3cc546b6ca50cfacd3a9c02916d3b64559c",
+  "pins" : [
+    {
+      "identity" : "voyager",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/bryan-vh/Voyager.git",
+      "state" : {
+        "revision" : "bdc75946f21efb27bf068012ef395c7f2c305da9",
+        "version" : "1.3.0"
+      }
+    }
+  ],
+  "version" : 3
+}
