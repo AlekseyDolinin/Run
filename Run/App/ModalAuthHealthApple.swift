@@ -15,9 +15,12 @@ struct ModalAuthHealthApple: View {
                     Spacer()
                     Button(action: {
                         print("Разрешить")
-                        
-                        Health.shared.authRequest()
-                        router.dismiss()
+//                        HealthKitService.getInstance().authorize { bool in
+//                            print("bool: \(bool)")
+//                            router.dismiss()
+//                        }
+//                        Health.shared.authRequest()
+//                        router.dismiss()
                         
                     }) {
                         Text("Разрешить")

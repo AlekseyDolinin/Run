@@ -159,8 +159,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Run/Info.plist;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "text text text";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Чтобы сохранять тренировки, необходимо разрешить сохранять данные в апрложении Здоровье";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Это приложение использует данные о вашем здоровье";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Это приложение записывает данные о тренировках и сожженных калориях в HealthKit";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -196,8 +196,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Run/Info.plist;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "text text text";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Чтобы сохранять тренировки, необходимо разрешить сохранять данные в апрложении Здоровье";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Это приложение использует данные о вашем здоровье";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Это приложение записывает данные о тренировках и сожженных калориях в HealthKit";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

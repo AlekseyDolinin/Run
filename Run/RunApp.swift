@@ -28,7 +28,6 @@ struct RunApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-//            MainView()
                 .onChange(of: scenePhase) { oldPhase, newPhase in
                     switch newPhase {
                     case .background:

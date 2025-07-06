@@ -4,59 +4,49 @@ import Voyager
 struct MainView: View {
     
     @EnvironmentObject var router: Router<AppRoute>
-    
     @State private var vm = ViewModel()
     
     var body: some View {
         ZStack {
-            Color.black
-            VStack(alignment: .center, spacing: 0) {
+            AppTheme.bg_one
+            VStack() {
                 TopBar()
                 ScrollView {
                     VStack(alignment: .center, spacing: 16) {
                         ForEach((0..<5)) { index in
                             Rectangle()
                                 .frame(height: 200)
-                                .foregroundStyle(AppTheme.bg_one)
+                                .foregroundStyle(AppTheme.bg_plate)
                         }
                     }
                     .padding(.top, 16)
                     .padding(.bottom, 140)
                 }
                 .scrollIndicators(.hidden)
-                .padding(.horizontal, 16)
+                .padding(.horizontal, 8)
             }
             .safeAreaPadding(.top, 56)
-            ZStack {
-                VStack {
-                    Spacer()
-                    Button(action: {
-                        print("START")
-                    }) {
-                        Text("START")
-                            .font(.regular_(size: .size_18))
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity, minHeight: 100)
-                    }
-                    .background(.blue)
-                }
-            }
+//            ZStack {
+//                VStack {
+//                    Spacer()
+//                    Button(action: {
+//                        print("START")
+////                        router.present(.newTraning, option: .fullscreenCover)
+//                    }) {
+//                        Text("Новая тренировка")
+//                            .font(.medium(size: .size_16))
+//                            .foregroundStyle(.white)
+//                            .frame(maxWidth: .infinity, minHeight: 56)
+//                    }
+//                    .foregroundStyle(.black)
+//                    .background(.blue)
+//                    .cornerRadius(16)
+//                }
+//            }
+//            .padding(.bottom, 32)
+//            .padding(.horizontal, 16)
         }
         .ignoresSafeArea()
-        .task {
-            let status = await Health.shared.ckeckAuthHealthKit()
-            switch status {
-            case .notDetermined:
-                print("AuthHealthKit: not Determined")
-                router.present(.modalAuthHealthApple, option: .fullscreenCover)
-            case .sharingDenied:
-                print("AuthHealthKit: sharing Denied")
-            case .sharingAuthorized:
-                print("AuthHealthKit: sharing Authorized")
-            @unknown default:
-                print("Unknown authorization status")
-            }
-        }
     }
 }
 
@@ -70,6 +60,5 @@ extension MainView {
     @Observable
     class ViewModel {
 
-        
     }
 }

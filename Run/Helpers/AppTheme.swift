@@ -5,24 +5,12 @@ final class AppTheme {
     
     static let shared = AppTheme()
     
-    static var bg_one: Color = Color.init(hex: "#1d1d1d")
-//    static var BB_BGPrimary: Color = Color(hex: "#1a1a1a")
-//    static var BB_BGSecondary: Color = .gray
-//    static var BB_BGTertiary: Color = .black
-//    
-//    static var BB_TextUI: Color = .white
-//    static var BB_TextHigh: Color = Color(hex: "#ffffff")
-//    static var BB_TextPrimary: Color = Color(hex: "#ffffff")
-//    static var BB_TextSecondary: Color = .white
-//    
-//    static var BB_TextMedium: Color = .white.opacity(0.7)
-//    static var BB_TextDisabled: Color = .white.opacity(0.5)
-//    
-//    static var BB_Red: Color = .red
-//    static var BB_Green: Color = .green
-//    static var BB_Warning: Color = .orange
-//    
-//    static var Surface_BB_00db: Color = .black
+    static var bg_one: Color = Color.init(hex: "#080808")
+    static var bg_top_bar: Color = Color.init(hex: "#101010")
+    static var bg_plate: Color = Color.init(hex: "#1d1d1d")
+
+    static var accentColor: Color = Color.pink
+    
 }
 
 
