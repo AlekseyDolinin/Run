@@ -1,18 +1,20 @@
 import SwiftUI
 import Voyager
+import CoreLocation
 
 struct NewTraningView: View {
     
     @EnvironmentObject var router: Router<AppRoute>
     @State private var vm = ViewModel()
-    
+
     var body: some View {
         ZStack {
             AppTheme.bg_one
             VStack(spacing: -20) {
                 ScrollViewReader { value in
                     ScrollView(.horizontal, showsIndicators: false) {
-                        LazyHStack(spacing: 0) {
+                        HStack(spacing: 0) {
+                            
                             Rectangle()
                                 .fill(.red)
                                 .frame(width: UIScreen.main.bounds.width,
@@ -21,13 +23,10 @@ struct NewTraningView: View {
                             TraningMapView()
                                 .frame(width: UIScreen.main.bounds.width,
                                        height: UIScreen.main.bounds.height)
-                            
-//                            Rectangle()
-//                                .fill(.orange)
-//                                .frame(width: UIScreen.main.bounds.width,
-//                                       height: UIScreen.main.bounds.height)
                         }
                         .scrollTargetLayout()
+//                        .frame(height: 200)
+//                        .padding(.bottom, 48)
                     }
                     .layoutDirectionBehavior(.fixed)
                     .flipsForRightToLeftLayoutDirection(true)
@@ -54,9 +53,12 @@ struct NewTraningView: View {
                     .frame(height: 20)
                 }
             }
-            .safeAreaPadding(.bottom, 88)
+            .safeAreaPadding(.bottom, 96)
         }
         .ignoresSafeArea()
+        .onFirstAppear {
+            vm.checkAvailableLocation()
+        }
     }
 }
 
@@ -80,6 +82,18 @@ extension NewTraningView {
         
         func getColor(_ index: Int) -> Color {
             return indexSelectGame == index ? .blue : .white.opacity(0.5)
+        }
+        
+        func checkAvailableLocation() {
+#if targetEnvironment(simulator)
+            LocationManager.shared.checkAuth()
+#else
+            if CLLocationManager.headingAvailable() {
+                LocationManager.shared.checkAuth()
+            } else {
+                print("Disable compass features")
+            }
+#endif
         }
     }
 }
