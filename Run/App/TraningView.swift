@@ -1,0 +1,71 @@
+import SwiftUI
+import Voyager
+import CoreLocation
+
+struct TraningView: View {
+    
+    @State private var vm = ViewModel()
+    
+    var body: some View {
+        ZStack {
+            AppTheme.bg_one
+            ScrollViewReader { value in
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 0) {
+                        TraningDataView()
+                            .frame(width: UIScreen.main.bounds.width)
+                        TraningMapView()
+                    }
+                }
+                .scrollTargetLayout()
+                .layoutDirectionBehavior(.fixed)
+                .flipsForRightToLeftLayoutDirection(true)
+                .scrollTargetBehavior(.viewAligned)
+                .onScrollPhaseChange { oldPhase, newPhase, context in
+                    if newPhase == .idle {
+                        vm.selectGame(context: context)
+                    }
+                }
+            }
+            ZStack {
+                VStack {
+                    Spacer()
+                    LazyHStack(alignment: .bottom, spacing: 8) {
+                        Circle()
+                            .foregroundStyle(vm.getColor(0))
+                            .frame(width: 8, height: 8)
+                        Circle()
+                            .foregroundStyle(vm.getColor(1))
+                            .frame(width: 8, height: 8)
+                    }
+                    .frame(height: 20)
+                }
+            }
+            .safeAreaPadding(.bottom, 80)
+        }
+    }
+}
+
+#Preview {
+    TraningView()
+}
+
+
+extension TraningView {
+    
+    @Observable
+    class ViewModel {
+        
+        var indexView = 0
+        
+        func selectGame(context: ScrollPhaseChangeContext) {
+            let bounds = context.geometry.bounds
+            let index: Int = Int((bounds.minX) / bounds.width)
+            indexView = index
+        }
+        
+        func getColor(_ index: Int) -> Color {
+            return indexView == index ? .blue : .white.opacity(0.5)
+        }
+    }
+}

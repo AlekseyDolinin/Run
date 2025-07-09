@@ -2,39 +2,71 @@ import SwiftUI
 import MapKit
 
 struct TraningMapView: View {
-        
+    
+    @State private var vm = ViewModel()
     @State private var hasTimeElapsed = false
-    
-    let startPosition = MapCameraPosition.region(
-        MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 10, longitude: 10),
-            span: MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10)
-        )
-    )
-    
-    let coordinate = CLLocationCoordinate2D(latitude: 10, longitude: 10)
     
     var body: some View {
         ZStack {
             AppTheme.accentColor
-            Map(initialPosition: startPosition, interactionModes: []) {
-                Marker("111", coordinate: coordinate)
-            }
-                .mapStyle(.imagery)
+            
+            Map(initialPosition: vm.getUserPosition(), interactionModes: [.rotate, .zoom])
+//                .mapStyle(.imagery)
+                .mapStyle(.standard)
                 .frame(width: UIScreen.main.bounds.width,
                        height: UIScreen.main.bounds.height)
+                .mapControlVisibility(.hidden)
+            
+            ZStack {
+                VStack {
+                    Spacer()
+                    Rectangle()
+                        .frame(width: UIScreen.main.bounds.width, height: 300)
+                }
+            }
         }
-//        .onAppear {
-//            let startPosition = MapCameraPosition.region(
-//                MKCoordinateRegion(
-//                    center: CLLocationCoordinate2D(latitude: 56, longitude: -3),
-//                    span: MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10)
-//                )
-//            )
-//        }
+        .onFirstAppear {
+            vm.checkAvailableLocation()
+        }
     }
 }
 
 #Preview {
-    NewTraningView()
+    TraningMapView()
+}
+
+
+
+extension TraningMapView {
+    
+    @Observable
+    class ViewModel {
+        
+        func checkAvailableLocation() {
+#if targetEnvironment(simulator)
+            LocationManager.shared.checkAuth()
+#else
+            if CLLocationManager.headingAvailable() {
+                LocationManager.shared.checkAuth()
+            } else {
+                print("Disable compass features")
+            }
+#endif
+        }
+        
+        
+        
+        
+        
+        func getUserPosition() -> MapCameraPosition {
+            let userPosition = MapCameraPosition.userLocation(
+                followsHeading: true,
+                fallback: .automatic
+            )
+            return userPosition
+        }
+        
+        
+        
+    }
 }

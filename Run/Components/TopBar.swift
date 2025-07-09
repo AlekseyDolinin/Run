@@ -41,8 +41,3 @@ struct TopBar: View {
         }
     }
 }
-
-
-#Preview {
-    MainView()
-}

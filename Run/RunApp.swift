@@ -27,19 +27,20 @@ struct RunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .onChange(of: scenePhase) { oldPhase, newPhase in
-                    switch newPhase {
-                    case .background:
-                        print("ScenePhase: Background from \(oldPhase)")
-                    case .inactive:
-                        print("ScenePhase: Inactive from \(oldPhase)")
-                    case .active:
-                        print("ScenePhase: Active/Foreground from \(oldPhase)")
-                    @unknown default:
-                        print("ScenePhase: Unknown scene phase \(newPhase) from \(oldPhase)")
-                    }
-                }
+            TabbarView()
+//            ContentView()
+//                .onChange(of: scenePhase) { oldPhase, newPhase in
+//                    switch newPhase {
+//                    case .background:
+//                        print("ScenePhase: Background from \(oldPhase)")
+//                    case .inactive:
+//                        print("ScenePhase: Inactive from \(oldPhase)")
+//                    case .active:
+//                        print("ScenePhase: Active/Foreground from \(oldPhase)")
+//                    @unknown default:
+//                        print("ScenePhase: Unknown scene phase \(newPhase) from \(oldPhase)")
+//                    }
+//                }
         }
     }
 }

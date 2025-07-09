@@ -42,7 +42,6 @@ final class LocationManager: NSObject {
         print("startUpdatingLocation")
         locationManager.startUpdatingLocation()
     }
-    
 }
 
 
@@ -69,4 +68,26 @@ extension  LocationManager: CLLocationManagerDelegate {
         guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         curentLocation = locValue
     }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        print(1)
+        print(manager)
+        print(newHeading)
+    }
+    
+    
+    func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
+        print("locationManagerDidPauseLocationUpdates")
+    }
+    
+    
+    func locationManagerDidResumeLocationUpdates(_ manager: CLLocationManager) {
+        print("locationManagerDidResumeLocationUpdates")
+    }
+    
+    func locationManagerShouldDisplayHeadingCalibration(_ manager: CLLocationManager) -> Bool {
+        print("locationManagerShouldDisplayHeadingCalibration")
+        return true
+    }
+    
 }
