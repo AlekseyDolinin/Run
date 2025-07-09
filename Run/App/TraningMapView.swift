@@ -4,29 +4,25 @@ import MapKit
 struct TraningMapView: View {
     
     @State private var vm = ViewModel()
-    @State private var hasTimeElapsed = false
     
+    @State private var userPosition = MapCameraPosition.userLocation(
+        followsHeading: true,
+        fallback: .automatic
+    )
+        
     var body: some View {
         ZStack {
             AppTheme.accentColor
             
-            Map(initialPosition: vm.getUserPosition(), interactionModes: [.rotate, .zoom])
-//                .mapStyle(.imagery)
+            Map(position: $userPosition, interactionModes: [.rotate, .zoom])
                 .mapStyle(.standard)
-                .frame(width: UIScreen.main.bounds.width,
-                       height: UIScreen.main.bounds.height)
+                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                 .mapControlVisibility(.hidden)
-            
-            ZStack {
-                VStack {
-                    Spacer()
-                    Rectangle()
-                        .frame(width: UIScreen.main.bounds.width, height: 300)
+                .onMapCameraChange(frequency: .continuous) { context in
+//                    print("context: \(context)")
                 }
-            }
-        }
-        .onFirstAppear {
-            vm.checkAvailableLocation()
+        }.onFirstAppear {
+            vm.updateDeviceMotion()
         }
     }
 }
@@ -34,7 +30,6 @@ struct TraningMapView: View {
 #Preview {
     TraningMapView()
 }
-
 
 
 extension TraningMapView {
@@ -54,19 +49,15 @@ extension TraningMapView {
 #endif
         }
         
-        
-        
-        
-        
-        func getUserPosition() -> MapCameraPosition {
-            let userPosition = MapCameraPosition.userLocation(
-                followsHeading: true,
-                fallback: .automatic
-            )
-            return userPosition
+        func updateDeviceMotion() {
+            print("updateDeviceMotion")
+            let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
         }
         
-        
-        
+        @objc
+        private func fireTimer() {
+            print(MotionManager.shared.manager.deviceMotion?.rotationRate.z)
+            print("-------------------------------------------------")
+        }
     }
 }

@@ -14,6 +14,10 @@ struct TabbarView: View {
             .tabItem {
                 Label("Тренировка", systemImage: "figure.run")
             }
+            SettingView()
+            .tabItem {
+                Label("Настройки", systemImage: "gear")
+            }
         }
         .tint(AppTheme.accentColor)
         .colorScheme(.dark)

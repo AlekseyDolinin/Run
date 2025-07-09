@@ -9,6 +9,7 @@ struct TraningView: View {
     var body: some View {
         ZStack {
             AppTheme.bg_one
+                .ignoresSafeArea()
             ScrollViewReader { value in
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 0) {

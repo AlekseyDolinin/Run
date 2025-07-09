@@ -4,29 +4,24 @@ final class LocationManager: NSObject {
     
     static let shared = LocationManager()
     
-    var locationManager: CLLocationManager!
-    var curentLocation: CLLocationCoordinate2D? {
-        didSet {
-            print("curentLocation = \(curentLocation)")
-        }
-    }
+    var manager: CLLocationManager!
     
     override init() {
         super.init()
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
+        manager = CLLocationManager()
+        manager.delegate = self
         // точность
-        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        manager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
     }
     
     func checkAuth() {
-        switch locationManager.authorizationStatus {
+        switch manager.authorizationStatus {
         case .authorizedAlways:
             print("authorizedAlways")
             startUpdatingLocation()
         case .notDetermined:
             print("Статус отслеживания геопозиции не определён")
-            locationManager.requestAlwaysAuthorization()
+            manager.requestAlwaysAuthorization()
         case .denied:
             print("Статус отслеживания геопозиции - запрещён")
         case .authorizedWhenInUse:
@@ -38,14 +33,14 @@ final class LocationManager: NSObject {
         }
     }
     
-    func startUpdatingLocation() {
+    private func startUpdatingLocation() {
         print("startUpdatingLocation")
-        locationManager.startUpdatingLocation()
+        manager.startUpdatingLocation()
     }
 }
 
 
-extension  LocationManager: CLLocationManagerDelegate {
+extension LocationManager: CLLocationManagerDelegate {
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
@@ -64,10 +59,10 @@ extension  LocationManager: CLLocationManagerDelegate {
     }
     
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-        curentLocation = locValue
-    }
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+//        curentLocation = locValue
+//    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         print(1)
