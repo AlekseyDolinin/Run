@@ -18,7 +18,7 @@ final class LocationManager: NSObject {
         switch manager.authorizationStatus {
         case .authorizedAlways:
             print("authorizedAlways")
-            startUpdatingLocation()
+            startUpdatingHeading()
         case .notDetermined:
             print("Статус отслеживания геопозиции не определён")
             manager.requestAlwaysAuthorization()
@@ -33,9 +33,9 @@ final class LocationManager: NSObject {
         }
     }
     
-    private func startUpdatingLocation() {
-        print("startUpdatingLocation")
-        manager.startUpdatingLocation()
+    private func startUpdatingHeading() {
+//        manager.startUpdatingLocation()
+        manager.startUpdatingHeading()
     }
 }
 
@@ -46,13 +46,11 @@ extension LocationManager: CLLocationManagerDelegate {
         switch manager.authorizationStatus {
         case .authorizedWhenInUse:
             print("Пользователь разрешил использовать геопозицию")
-            startUpdatingLocation()
+            startUpdatingHeading()
         case .restricted, .denied:
             print("Пользователь запретил использовать геопозицию")
-            
         case .notDetermined:
             print("Разрешение еще не определено")
-            
         default:
             break
         }
@@ -65,11 +63,9 @@ extension LocationManager: CLLocationManagerDelegate {
 //    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        print(1)
-        print(manager)
-        print(newHeading)
+        print("---")
+        print(cardinalValue(from: newHeading.trueHeading))
     }
-    
     
     func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
         print("locationManagerDidPauseLocationUpdates")
@@ -85,4 +81,30 @@ extension LocationManager: CLLocationManagerDelegate {
         return true
     }
     
+    
+    
+    func cardinalValue(from heading: CLLocationDirection) -> String {
+            switch heading {
+            case 0 ..< 22.5:
+                return "N"
+            case 22.5 ..< 67.5:
+                return "NE"
+            case 67.5 ..< 112.5:
+                return "E"
+            case 112.5 ..< 157.5:
+                return "SE"
+            case 157.5 ..< 202.5:
+                return "S"
+            case 202.5 ..< 247.5:
+                return "SW"
+            case 247.5 ..< 292.5:
+                return "W"
+            case 292.5 ..< 337.5:
+                return "NW"
+            case 337.5 ... 360.0:
+                return "N"
+            default:
+                return ""
+            }
+        }
 }

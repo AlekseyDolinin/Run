@@ -21,8 +21,10 @@ struct TraningMapView: View {
                 .onMapCameraChange(frequency: .continuous) { context in
 //                    print("context: \(context)")
                 }
-        }.onFirstAppear {
+        }
+        .onFirstAppear {
             vm.updateDeviceMotion()
+            vm.checkAvailableLocation()
         }
     }
 }
@@ -38,6 +40,7 @@ extension TraningMapView {
     class ViewModel {
         
         func checkAvailableLocation() {
+            print("checkAvailableLocation")
 #if targetEnvironment(simulator)
             LocationManager.shared.checkAuth()
 #else
@@ -56,8 +59,8 @@ extension TraningMapView {
         
         @objc
         private func fireTimer() {
-            print(MotionManager.shared.manager.deviceMotion?.rotationRate.z)
-            print("-------------------------------------------------")
+//            print(MotionManager.shared.manager.deviceMotion?.rotationRate.z)
+//            print("-------------------------------------------------")
         }
     }
 }
