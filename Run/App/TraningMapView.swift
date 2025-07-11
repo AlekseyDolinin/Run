@@ -9,22 +9,22 @@ struct TraningMapView: View {
         followsHeading: true,
         fallback: .automatic
     )
-        
+                
     var body: some View {
         ZStack {
-            AppTheme.accentColor
-            
+            AppTheme.bg_one
             Map(position: $userPosition, interactionModes: [.rotate, .zoom])
-                .mapStyle(.standard)
+                .mapStyle(.standard(elevation: .flat, emphasis: .muted, pointsOfInterest: .excludingAll, showsTraffic: false))
                 .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                 .mapControlVisibility(.hidden)
-                .onMapCameraChange(frequency: .continuous) { context in
-//                    print("context: \(context)")
-                }
+                .rotationEffect(vm.degreesToRadians(), anchor: .center)
+            
+            
         }
-        .onFirstAppear {
-            vm.updateDeviceMotion()
-            vm.checkAvailableLocation()
+        .onChange(of: LocationManager.shared.location) { _, location in
+            if let location = location {
+                vm.location = location
+            }
         }
     }
 }
@@ -39,28 +39,11 @@ extension TraningMapView {
     @Observable
     class ViewModel {
         
-        func checkAvailableLocation() {
-            print("checkAvailableLocation")
-#if targetEnvironment(simulator)
-            LocationManager.shared.checkAuth()
-#else
-            if CLLocationManager.headingAvailable() {
-                LocationManager.shared.checkAuth()
-            } else {
-                print("Disable compass features")
-            }
-#endif
-        }
+        var location = CLLocation()
         
-        func updateDeviceMotion() {
-            print("updateDeviceMotion")
-            let timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
-        }
-        
-        @objc
-        private func fireTimer() {
-//            print(MotionManager.shared.manager.deviceMotion?.rotationRate.z)
-//            print("-------------------------------------------------")
+        func degreesToRadians() -> Angle {
+            let angle = Angle(degrees: CGFloat(location.course * .pi / 180 - 90))
+            return angle
         }
     }
 }

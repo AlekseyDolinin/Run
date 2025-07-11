@@ -44,6 +44,9 @@ struct TraningView: View {
             }
             .safeAreaPadding(.bottom, 80)
         }
+        .onFirstAppear {
+            vm.checkAvailableLocation()
+        }
     }
 }
 
@@ -67,6 +70,19 @@ extension TraningView {
         
         func getColor(_ index: Int) -> Color {
             return indexView == index ? .blue : .white.opacity(0.5)
+        }
+        
+        func checkAvailableLocation() {
+            print("checkAvailableLocation")
+#if targetEnvironment(simulator)
+            LocationManager.shared.checkAuth()
+#else
+            if CLLocationManager.headingAvailable() {
+                LocationManager.shared.checkAuth()
+            } else {
+                print("Disable compass features")
+            }
+#endif
         }
     }
 }
