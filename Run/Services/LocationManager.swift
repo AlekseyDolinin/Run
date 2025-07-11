@@ -23,7 +23,7 @@ final class LocationManager: NSObject {
         switch manager.authorizationStatus {
         case .authorizedAlways:
             print("authorizedAlways")
-            startUpdating()
+//            startUpdating()
         case .notDetermined:
             print("Статус отслеживания геопозиции не определён")
             manager.requestAlwaysAuthorization()
@@ -38,13 +38,13 @@ final class LocationManager: NSObject {
         }
     }
     
-    private func startUpdating() {
-        print("startUpdating")
-        manager.startUpdatingLocation()
-        manager.startUpdatingHeading()
-        //
-        manager.pausesLocationUpdatesAutomatically = true
-    }
+//    private func startUpdating() {
+//        print("startUpdating")
+//        manager.startUpdatingLocation()
+//        manager.startUpdatingHeading()
+//        //
+//        manager.pausesLocationUpdatesAutomatically = true
+//    }
 }
 
 
@@ -54,7 +54,7 @@ extension LocationManager: CLLocationManagerDelegate {
         switch manager.authorizationStatus {
         case .authorizedWhenInUse:
             print("Пользователь разрешил использовать геопозицию")
-            startUpdating()
+//            startUpdating()
         case .restricted, .denied:
             print("Пользователь запретил использовать геопозицию")
         case .notDetermined:
@@ -68,10 +68,7 @@ extension LocationManager: CLLocationManagerDelegate {
         print("Location update failed: \(error)")
     }
     
-    func locationManager(
-        _ manager: CLLocationManager,
-        didUpdateLocations locations: [CLLocation]
-    ) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             self.location = location
 //            //
@@ -89,7 +86,7 @@ extension LocationManager: CLLocationManagerDelegate {
 //            print("speed: \(location.speed)")
             // Возвращает курс местоположения в градусах истинного севера.
             // Значение отрицательное, если курс недействителен.
-            print("course: \(location.course)")
+//            print("course: \(location.course)")
 //            // Возвращает точность курса местоположения в градусах.
 //            // Возвращает отрицательное значение, если курс недействителен.
 //            print("courseAccuracy: \(location.courseAccuracy)")
@@ -101,7 +98,7 @@ extension LocationManager: CLLocationManagerDelegate {
 //            print("speedAccuracy: \(location.speedAccuracy)")
 //            // Возвращает координаты текущего местоположения.
 //            print("coordinate: \(location.coordinate)")
-            print("==================================================================================")
+//            print("==================================================================================")
         }
     }
     
