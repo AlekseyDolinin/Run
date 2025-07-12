@@ -115,7 +115,7 @@ extension TraningMapVC {
     
     private func createSubviews() {
         createMapView()
-        createStartTrackingButton()
+//        createStartTrackingButton()
     }
     
     private func createMapView() {

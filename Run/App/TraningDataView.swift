@@ -8,23 +8,24 @@ struct TraningDataView: View {
     
     var body: some View {
         ZStack {
-            AppTheme.bg_one
-                .ignoresSafeArea()
             VStack() {
                 
                 Text("SPEED")
                     .foregroundStyle(.white)
                 Text("\(vm.location.speed)")
+                    .font(.custom("MonomaniacOne-Regular", size: 24))
                     .foregroundStyle(.white)
                 
                 Text("COURSE")
                     .foregroundStyle(.white)
                 Text("\(vm.location.course)")
+                    .font(.custom("MonomaniacOne-Regular", size: 24))
                     .foregroundStyle(.white)
                 
                 Text("COORDINATES")
                     .foregroundStyle(.white)
                 Text("\(vm.location.coordinate)")
+                    .font(.custom("MonomaniacOne-Regular", size: 24))
                     .foregroundStyle(.white)
             }
         }

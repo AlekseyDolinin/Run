@@ -5,11 +5,14 @@ import CoreLocation
 struct TraningView: View {
     
     @State private var vm = ViewModel()
+    @State private var opacity: Double = 0.2
     
     var body: some View {
         ZStack {
             AppTheme.bg_one
                 .ignoresSafeArea()
+            MapView(location: LocationManager.shared.location)
+                .opacity(opacity)
             ScrollViewReader { value in
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 0) {
@@ -46,6 +49,11 @@ struct TraningView: View {
         }
         .onFirstAppear {
             vm.checkAvailableLocation()
+        }
+        .onChange(of: vm.indexView) { oldValue, newValue in
+            withAnimation(.easeInOut(duration: 1)) {
+                opacity = opacity == 0.2 ? 1.0 : 0.2
+            }
         }
     }
 }

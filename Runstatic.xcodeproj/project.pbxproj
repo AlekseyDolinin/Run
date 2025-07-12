@@ -11,16 +11,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		109516682E191A9900E3583F /* Run.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Run.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		109516682E191A9900E3583F /* Runstatic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runstatic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		109516752E191A9C00E3583F /* Exceptions for "Run" folder in "Run" target */ = {
+		109516752E191A9C00E3583F /* Exceptions for "Run" folder in "Runstatic" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 109516672E191A9900E3583F /* Run */;
+			target = 109516672E191A9900E3583F /* Runstatic */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -28,7 +28,7 @@
 		1095166A2E191A9900E3583F /* Run */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				109516752E191A9C00E3583F /* Exceptions for "Run" folder in "Run" target */,
+				109516752E191A9C00E3583F /* Exceptions for "Run" folder in "Runstatic" target */,
 			);
 			path = Run;
 			sourceTree = "<group>";
@@ -58,7 +58,7 @@
 		109516692E191A9900E3583F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				109516682E191A9900E3583F /* Run.app */,
+				109516682E191A9900E3583F /* Runstatic.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -66,9 +66,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		109516672E191A9900E3583F /* Run */ = {
+		109516672E191A9900E3583F /* Runstatic */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 109516762E191A9C00E3583F /* Build configuration list for PBXNativeTarget "Run" */;
+			buildConfigurationList = 109516762E191A9C00E3583F /* Build configuration list for PBXNativeTarget "Runstatic" */;
 			buildPhases = (
 				109516642E191A9900E3583F /* Sources */,
 				109516652E191A9900E3583F /* Frameworks */,
@@ -81,12 +81,12 @@
 			fileSystemSynchronizedGroups = (
 				1095166A2E191A9900E3583F /* Run */,
 			);
-			name = Run;
+			name = Runstatic;
 			packageProductDependencies = (
 				109517AF2E1942EC00E3583F /* Voyager */,
 			);
 			productName = Run;
-			productReference = 109516682E191A9900E3583F /* Run.app */;
+			productReference = 109516682E191A9900E3583F /* Runstatic.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -104,7 +104,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 109516632E191A9900E3583F /* Build configuration list for PBXProject "Run" */;
+			buildConfigurationList = 109516632E191A9900E3583F /* Build configuration list for PBXProject "Runstatic" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -121,7 +121,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				109516672E191A9900E3583F /* Run */,
+				109516672E191A9900E3583F /* Runstatic */,
 			);
 		};
 /* End PBXProject section */
@@ -349,7 +349,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		109516632E191A9900E3583F /* Build configuration list for PBXProject "Run" */ = {
+		109516632E191A9900E3583F /* Build configuration list for PBXProject "Runstatic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				109516792E191A9C00E3583F /* Debug */,
@@ -358,7 +358,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		109516762E191A9C00E3583F /* Build configuration list for PBXNativeTarget "Run" */ = {
+		109516762E191A9C00E3583F /* Build configuration list for PBXNativeTarget "Runstatic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				109516772E191A9C00E3583F /* Debug */,

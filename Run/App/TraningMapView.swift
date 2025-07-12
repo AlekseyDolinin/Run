@@ -1,14 +1,13 @@
 import SwiftUI
 import CoreLocation
 import UIKit
-//import MapKit
 
 struct TraningMapView: View {
                     
     var body: some View {
         ZStack {
-            AppTheme.bg_one
-            MapView(location: LocationManager.shared.location)
+//            AppTheme.bg_one
+//            MapView(location: LocationManager.shared.location)
         }
         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         .onChange(of: LocationManager.shared.location) { _, location in

@@ -18,6 +18,10 @@
 		<string>MKDirectionsModeBike</string>
 		<string>MKDirectionsModePedestrian</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>MonomaniacOne-Regular.ttf</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
