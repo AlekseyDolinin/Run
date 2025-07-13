@@ -32,16 +32,26 @@ class TraningMapVC: UIViewController {
             let currentZoomScale = mapView.bounds.size.width / mapView.visibleMapRect.size.width
             let lineWidth = MKRoadWidthAtZoomScale(currentZoomScale)
             var areaToRedisplay = breadcrumbs.pathBounds
-            areaToRedisplay = areaToRedisplay.insetBy(dx: -lineWidth, dy: -lineWidth)
+            areaToRedisplay = areaToRedisplay.insetBy(
+                dx: -lineWidth,
+                dy: -lineWidth
+            )
             breadcrumbPathRenderer?.setNeedsDisplay(areaToRedisplay)
         }
         if result.boundingRectChanged {
             updateBreadcrumbBoundsOverlay()
         }
         if breadcrumbs.locations.count == 1 {
-            let region = MKCoordinateRegion(center: newLocation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+            let region = MKCoordinateRegion(
+                center: newLocation.coordinate,
+                latitudinalMeters: 1000,
+                longitudinalMeters: 1000
+            )
             mapView.setRegion(region, animated: true)
-            mapView.setUserTrackingMode(.followWithHeading, animated: true)
+            mapView.setUserTrackingMode(
+                .followWithHeading,
+                animated: true
+            )
         }
     }
     
@@ -61,7 +71,10 @@ class TraningMapVC: UIViewController {
             breadcrumbPathRenderer = nil
         }
         breadcrumbs = BreadcrumbPath()
-        mapView.addOverlay(breadcrumbs, level: .aboveRoads)
+        mapView.addOverlay(
+            breadcrumbs,
+            level: .aboveRoads
+        )
         locationManager.requestWhenInUseAuthorization()
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.pausesLocationUpdatesAutomatically = false
@@ -104,6 +117,7 @@ extension TraningMapVC: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(">>>>>>>")
         debugPrint(error)
     }
     
