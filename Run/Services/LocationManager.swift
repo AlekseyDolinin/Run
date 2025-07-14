@@ -11,10 +11,11 @@ final class LocationManager: NSObject {
     var timer: Timer!
     var timingTracking = 0
     
-    var state: TrackingState = .stop
+    var state: TrackingState = .ready
     
     enum TrackingState {
         case stop
+        case ready
         case tracking
         case paused
     }
@@ -26,25 +27,6 @@ final class LocationManager: NSObject {
         manager.delegate = self
         // точность
         manager.desiredAccuracy = kCLLocationAccuracyBest
-    }
-    
-    func checkAuth() {
-        print("checkAuth LocationManager")
-        switch manager.authorizationStatus {
-        case .authorizedAlways:
-            print("authorizedAlways")
-        case .notDetermined:
-            print("Статус отслеживания геопозиции не определён")
-            manager.requestAlwaysAuthorization()
-        case .denied:
-            print("Статус отслеживания геопозиции - запрещён")
-        case .authorizedWhenInUse:
-            print("authorizedWhenInUse")
-        case .restricted:
-            print("restricted")
-        default:
-            break
-        }
     }
     
     func start() {

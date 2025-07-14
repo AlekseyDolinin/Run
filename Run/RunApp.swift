@@ -13,9 +13,7 @@ struct RunApp: App {
     }
     
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
+        let schema = Schema([Item.self])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {
@@ -28,19 +26,6 @@ struct RunApp: App {
     var body: some Scene {
         WindowGroup {
             TabbarView()
-//            ContentView()
-//                .onChange(of: scenePhase) { oldPhase, newPhase in
-//                    switch newPhase {
-//                    case .background:
-//                        print("ScenePhase: Background from \(oldPhase)")
-//                    case .inactive:
-//                        print("ScenePhase: Inactive from \(oldPhase)")
-//                    case .active:
-//                        print("ScenePhase: Active/Foreground from \(oldPhase)")
-//                    @unknown default:
-//                        print("ScenePhase: Unknown scene phase \(newPhase) from \(oldPhase)")
-//                    }
-//                }
         }
     }
 }

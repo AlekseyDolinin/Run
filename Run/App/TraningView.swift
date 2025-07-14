@@ -3,94 +3,73 @@ import Voyager
 import CoreLocation
 
 struct TraningView: View {
-    
-    @State private var vm = ViewModel()
-    @State private var opacity: Double = 0.2
+        
+    @EnvironmentObject var router: Router<AppRoute>
     
     var body: some View {
         ZStack {
-            AppTheme.bg_one
-                .ignoresSafeArea()
-            MapView(location: LocationManager.shared.location)
-                .opacity(opacity)
-            ScrollViewReader { value in
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 0) {
-                        TraningDataView()
-                            .frame(width: UIScreen.main.bounds.width)
-                        TraningMapView()
+            MapView()
+            Color.black
+                .opacity(0.75)
+            VStack(alignment: .leading, spacing: 100) {
+                TraningDataView()
+                HStack(alignment: .center, spacing: 64) {
+                    if LocationManager.shared.state == .stop {
+                        Button(action: {
+                            LocationManager.shared.start()
+                        }) {
+                            Image(systemName: "figure.run").font(.system(size: 36))
+                                .tint(.white)
+                                .frame( width: 80, height: 80)
+                        }
+                        .background(AppTheme.accentColor)
+                        .cornerRadius(16)
+                    }
+                    if LocationManager.shared.state == .tracking {
+                        Button(action: {
+                            LocationManager.shared.pause()
+                        }) {
+                            Image(systemName: "pause.fill").font(.system(size: 36))
+                                .tint(AppTheme.accentColor)
+                                .frame( width: 80, height: 80)
+                        }
+                        .background(.white)
+                        .cornerRadius(16)
+                    }
+                    if LocationManager.shared.state == .paused {
+                        Button(action: {
+                            LocationManager.shared.stop()
+                            router.updateRoot(.statistic)
+                        }) {
+                            Image(systemName: "stop.fill").font(.system(size: 36))
+                                .tint(AppTheme.accentColor)
+                                .frame( width: 80, height: 80)
+                        }
+                        .background(.white)
+                        .cornerRadius(16)
+                        Button(action: {
+                            LocationManager.shared.resume()
+                        }) {
+                            Image(systemName: "play.fill").font(.system(size: 38))
+                                .tint(AppTheme.accentColor)
+                                .frame( width: 80, height: 80)
+                        }
+                        .background(.white)
+                        .cornerRadius(16)
                     }
                 }
-                .scrollTargetLayout()
-                .layoutDirectionBehavior(.fixed)
-                .flipsForRightToLeftLayoutDirection(true)
-                .scrollTargetBehavior(.viewAligned)
-                .onScrollPhaseChange { oldPhase, newPhase, context in
-                    if newPhase == .idle {
-                        vm.selectGame(context: context)
-                    }
-                }
+                .frame(maxWidth: .infinity, maxHeight: 64)
             }
-            ZStack {
-                VStack {
-                    Spacer()
-                    LazyHStack(alignment: .bottom, spacing: 8) {
-                        Circle()
-                            .foregroundStyle(vm.getColor(0))
-                            .frame(width: 8, height: 8)
-                        Circle()
-                            .foregroundStyle(vm.getColor(1))
-                            .frame(width: 8, height: 8)
-                    }
-                    .frame(height: 20)
-                }
-            }
-            .safeAreaPadding(.bottom, 80)
+            .safeAreaPadding(.horizontal)
+            .safeAreaPadding(.bottom, 64)
         }
+        .ignoresSafeArea()
         .onFirstAppear {
-            vm.checkAvailableLocation()
-        }
-        .onChange(of: vm.indexView) { oldValue, newValue in
-            withAnimation(.easeInOut(duration: 1)) {
-                opacity = opacity == 0.2 ? 1.0 : 0.2
-            }
+            LocationManager.shared.start()
         }
     }
 }
 
 #Preview {
     TraningView()
-}
-
-
-extension TraningView {
-    
-    @Observable
-    class ViewModel {
-        
-        var indexView = 0
-        
-        func selectGame(context: ScrollPhaseChangeContext) {
-            let bounds = context.geometry.bounds
-            let index: Int = Int((bounds.minX) / bounds.width)
-            indexView = index
-        }
-        
-        func getColor(_ index: Int) -> Color {
-            return indexView == index ? .blue : .white.opacity(0.5)
-        }
-        
-        func checkAvailableLocation() {
-            print("checkAvailableLocation")
-#if targetEnvironment(simulator)
-            LocationManager.shared.checkAuth()
-#else
-            if CLLocationManager.headingAvailable() {
-                LocationManager.shared.checkAuth()
-            } else {
-                print("Disable compass features")
-            }
-#endif
-        }
-    }
 }

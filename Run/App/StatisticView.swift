@@ -2,10 +2,11 @@ import SwiftUI
 import Voyager
 
 struct StatisticView: View {
-        
+    
     var body: some View {
         ZStack {
             AppTheme.bg_one
+                .ignoresSafeArea()
             VStack() {
                 TopBar()
                 ScrollView {
