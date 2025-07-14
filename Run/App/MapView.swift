@@ -5,15 +5,19 @@ import MapKit
 
 struct MapView: UIViewControllerRepresentable {
         
+    var isMonitoring: Bool
+    
     func makeUIViewController(context: Context) -> UIViewController {
-        return TraningMapVC()
+        print("222: \(isMonitoring)")
+        let vc = TraningMapVC(isMonitoring: isMonitoring)
+        return vc
     }
     
     func updateUIViewController(_ viewController: UIViewController, context: Context) { }
 }
 
 #Preview {
-    MapView()
+    MapView(isMonitoring: true)
 }
 
 
@@ -25,7 +29,8 @@ final class TraningMapVC: UIViewController {
     private var breadcrumbPathRenderer: BreadcrumbPathRenderer?
     private var breadcrumbBoundingPolygon: MKPolygon?
     private let locationManager = CLLocationManager()
-    private var isMonitoringLocation = false
+    
+    private var isMonitoring: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,15 +38,34 @@ final class TraningMapVC: UIViewController {
         createSubviews()
     }
 
-    func trackingAction() {
-        if isMonitoringLocation {
-            stopRecordingLocation()
-        } else {
+    init(isMonitoring: Bool) {
+        super.init(nibName: nil, bundle: nil)
+        
+        print(">>> \(isMonitoring)")
+        
+        self.isMonitoring = isMonitoring
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        trackingAction()
+    }
+    
+    private func trackingAction() {
+        print("trackingAction")
+        print("isMonitoring: \(isMonitoring)")
+        if isMonitoring == true {
             startRecordingLocation()
+        } else {
+            stopRecordingLocation()
         }
     }
         
-    func displayNewBreadcrumbOnMap(_ newLocation: CLLocation) {
+    private func displayNewBreadcrumbOnMap(_ newLocation: CLLocation) {
         let result = breadcrumbs.addLocation(newLocation)
          if result.locationAdded {
             let currentZoomScale = mapView.bounds.size.width / mapView.visibleMapRect.size.width
@@ -80,7 +104,7 @@ final class TraningMapVC: UIViewController {
        removeBreadcrumbBoundsOverlay()
     }
     
-    func startRecordingLocation() {
+    private func startRecordingLocation() {
         if let breadcrumbs {
             mapView.removeOverlay(breadcrumbs)
             breadcrumbPathRenderer = nil
@@ -94,11 +118,11 @@ final class TraningMapVC: UIViewController {
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.startUpdatingLocation()
-        isMonitoringLocation = true
+        isMonitoring = true
     }
     
-    func stopRecordingLocation() {
-        isMonitoringLocation = false
+    private func stopRecordingLocation() {
+        isMonitoring = false
         locationManager.stopUpdatingLocation()
     }
 }
@@ -119,6 +143,10 @@ extension TraningMapVC: MKMapViewDelegate {
         } else {
             fatalError("Unknown overlay \(overlay) added to the map")
         }
+    }
+    
+    func mapView(_ mapView: MKMapView, didFailToLocateUserWithError error: any Error) {
+        print("didFailToLocateUserWithError")
     }
 }
 

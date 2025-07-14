@@ -11,7 +11,7 @@ final class LocationManager: NSObject {
     var timer: Timer!
     var timingTracking = 0
     
-    var state: TrackingState = .ready
+    var state: TrackingState = .stop
     
     enum TrackingState {
         case stop

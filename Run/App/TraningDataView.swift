@@ -80,7 +80,8 @@ extension TraningDataView {
         func getSpeed() -> String {
             if LocationManager.shared.state == .tracking {
                 if let location = LocationManager.shared.location {
-                    return "\(location.speed)"
+                    let value = String(format: "%0.2f",  location.speed)
+                    return value
                 } else {
                     return "0.00"
                 }
