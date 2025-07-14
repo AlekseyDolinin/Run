@@ -1,16 +1,31 @@
+import SwiftUI
+import CoreLocation
 import UIKit
 import MapKit
 
-class TraningMapVC: UIViewController {
+struct MapView: UIViewControllerRepresentable {
+        
+    func makeUIViewController(context: Context) -> UIViewController {
+        return TraningMapVC()
+    }
+    
+    func updateUIViewController(_ viewController: UIViewController, context: Context) { }
+}
+
+#Preview {
+    MapView()
+}
+
+
+final class TraningMapVC: UIViewController {
     
     private let mapView = MKMapView()
-    private let startTrackingButton = UIButton()
     
-    var breadcrumbs: BreadcrumbPath!
-    var breadcrumbPathRenderer: BreadcrumbPathRenderer?
-    var breadcrumbBoundingPolygon: MKPolygon?
-    let locationManager = CLLocationManager()
-    var isMonitoringLocation = false
+    private var breadcrumbs: BreadcrumbPath!
+    private var breadcrumbPathRenderer: BreadcrumbPathRenderer?
+    private var breadcrumbBoundingPolygon: MKPolygon?
+    private let locationManager = CLLocationManager()
+    private var isMonitoringLocation = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,8 +59,8 @@ class TraningMapVC: UIViewController {
         if breadcrumbs.locations.count == 1 {
             let region = MKCoordinateRegion(
                 center: newLocation.coordinate,
-                latitudinalMeters: 1000,
-                longitudinalMeters: 1000
+                latitudinalMeters: 100,
+                longitudinalMeters: 100
             )
             mapView.setRegion(region, animated: true)
             mapView.setUserTrackingMode(
@@ -116,10 +131,7 @@ extension TraningMapVC: CLLocationManagerDelegate {
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(">>>>>>>")
-        debugPrint(error)
-    }
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) { }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) { }
 }
@@ -128,11 +140,6 @@ extension TraningMapVC: CLLocationManagerDelegate {
 extension TraningMapVC {
     
     private func createSubviews() {
-        createMapView()
-//        createStartTrackingButton()
-    }
-    
-    private func createMapView() {
         view.addSubview(mapView)
         mapView.delegate = self
         mapView.isRotateEnabled = false
@@ -156,28 +163,5 @@ extension TraningMapVC {
         mapView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         mapView.topAnchor.constraint(equalTo: view.topAnchor, constant: -(UIScreen.main.bounds.height / 2)).isActive = true
-    }
-    
-    private func createStartTrackingButton() {
-        view.addSubview(startTrackingButton)
-        startTrackingButton.backgroundColor = UIColor(AppTheme.accentColor)
-        startTrackingButton.layer.cornerRadius = 16
-        startTrackingButton.setTitle(
-            "START",
-            for: .normal
-        )
-        let action = UIAction { [weak self] _ in
-            self?.trackingAction()
-        }
-        startTrackingButton.addAction(
-            action,
-            for: .touchUpInside
-        )
-        //
-        startTrackingButton.translatesAutoresizingMaskIntoConstraints = false
-        startTrackingButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16).isActive = true
-        startTrackingButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
-        startTrackingButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24).isActive = true
-        startTrackingButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
     }
 }

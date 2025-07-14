@@ -3,14 +3,14 @@ import Voyager
 import CoreLocation
 
 struct TraningView: View {
-        
+    
     @EnvironmentObject var router: Router<AppRoute>
     
     var body: some View {
         ZStack {
             MapView()
-            Color.black
-                .opacity(0.75)
+//            Color.black
+//                .opacity(0.85)
             VStack(alignment: .leading, spacing: 100) {
                 TraningDataView()
                 HStack(alignment: .center, spacing: 64) {
@@ -40,6 +40,7 @@ struct TraningView: View {
                         Button(action: {
                             LocationManager.shared.stop()
                             router.updateRoot(.statistic)
+                            router.present(.traningDetail)
                         }) {
                             Image(systemName: "stop.fill").font(.system(size: 36))
                                 .tint(AppTheme.accentColor)
