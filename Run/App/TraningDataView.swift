@@ -129,8 +129,12 @@ extension TraningDataView {
     class ViewModel {
         
         func getSpeed() -> String {
-            if let location = LocationManager.shared.location {
-                return "\(location.speed)"
+            if LocationManager.shared.state == .tracking {
+                if let location = LocationManager.shared.location {
+                    return "\(location.speed)"
+                } else {
+                    return "0.00"
+                }
             } else {
                 return "0.00"
             }
@@ -146,10 +150,6 @@ extension TraningDataView {
                 let seconds = String(format: "%02d", (totalSeconds % 3600) % 60)
                 return "\(hours):\(minutes):\(seconds)"
             }
-        }
-        
-        func setButtonsNAvigation() {
-            
         }
     }
 }

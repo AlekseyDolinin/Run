@@ -70,6 +70,7 @@ final class LocationManager: NSObject {
         manager.stopUpdatingLocation()
         timer.invalidate()
         timer = nil
+        timingTracking = 0
     }
     
     private func startTimerTracking() {
