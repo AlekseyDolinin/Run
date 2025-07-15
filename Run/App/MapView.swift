@@ -28,13 +28,14 @@ final class TraningMapVC: UIViewController {
     private var breadcrumbs: BreadcrumbPath!
     private var breadcrumbPathRenderer: BreadcrumbPathRenderer?
     private var breadcrumbBoundingPolygon: MKPolygon?
-    private let locationManager = CLLocationManager()
+//    private let locationManager = CLLocationManager()
     
     private var isMonitoring: Bool = false
+//    var startPoints: CLLocation? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        locationManager.delegate = self
+//        locationManager.delegate = self
         createSubviews()
     }
 
@@ -114,16 +115,16 @@ final class TraningMapVC: UIViewController {
             breadcrumbs,
             level: .aboveRoads
         )
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.allowsBackgroundLocationUpdates = true
-        locationManager.pausesLocationUpdatesAutomatically = false
-        locationManager.startUpdatingLocation()
+//        locationManager.requestWhenInUseAuthorization()
+//        locationManager.allowsBackgroundLocationUpdates = true
+//        locationManager.pausesLocationUpdatesAutomatically = false
+//        locationManager.startUpdatingLocation()
         isMonitoring = true
     }
     
     private func stopRecordingLocation() {
         isMonitoring = false
-        locationManager.stopUpdatingLocation()
+//        locationManager.stopUpdatingLocation()
     }
 }
 
@@ -145,9 +146,9 @@ extension TraningMapVC: MKMapViewDelegate {
         }
     }
     
-    func mapView(_ mapView: MKMapView, didFailToLocateUserWithError error: any Error) {
-        print("didFailToLocateUserWithError")
-    }
+//    func mapView(_ mapView: MKMapView, didFailToLocateUserWithError error: any Error) {
+//        print("didFailToLocateUserWithError")
+//    }
 }
 
 
@@ -156,12 +157,29 @@ extension TraningMapVC: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         for location in locations {
             displayNewBreadcrumbOnMap(location)
+//            print(location)
+//            print(location.distance(from: CLLocation))
+//            if startPoints == nil {
+//                startPoints = location
+//            }
+//            print(location.distance(from: startPoints!))
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) { }
+//    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) { }
     
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) { }
+//    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) { }
+    
+//    func computeDistance(from points: [CLLocationCoordinate2D]) -> Double {
+//        guard let first = points.first else { return 0.0 }
+//        var prevPoint = first
+//        return points.reduce(0.0) { (count, point) -> Double in
+//            let newCount = count + CLLocation(latitude: prevPoint.latitude, longitude: prevPoint.longitude).distance(
+//                from: CLLocation(latitude: point.latitude, longitude: point.longitude))
+//            prevPoint = point
+//            return newCount
+//        }
+//    }
 }
 
 

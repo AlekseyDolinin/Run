@@ -22,7 +22,7 @@ struct TraningDataView: View {
                             .multilineTextAlignment(.leading)
                     }
                     VStack(alignment: .leading, spacing: -8) {
-                        Text("00,00")
+                        Text(vm.getTrackingDistance())
                             .font(.custom("MonomaniacOne-Regular", size: 60))
                             .foregroundStyle(.white)
                             .multilineTextAlignment(.leading)
@@ -74,14 +74,14 @@ struct TraningDataView: View {
 
 extension TraningDataView {
     
+    @MainActor
     @Observable
     class ViewModel {
         
         func getSpeed() -> String {
             if LocationManager.shared.state == .tracking {
                 if let location = LocationManager.shared.location {
-                    let value = String(format: "%0.2f",  location.speed)
-                    return value
+                    return String(format: "%0.2f",  location.speed * 3.6)
                 } else {
                     return "0.00"
                 }
@@ -100,6 +100,12 @@ extension TraningDataView {
                 let seconds = String(format: "%02d", (totalSeconds % 3600) % 60)
                 return "\(hours):\(minutes):\(seconds)"
             }
+        }
+        
+        func getTrackingDistance() -> String {
+            let distanceInMeters = LocationManager.shared.totalDistance
+            let distanceInKm = distanceInMeters / 1000
+            return String(format: "%0.2f",  distanceInKm)
         }
     }
 }

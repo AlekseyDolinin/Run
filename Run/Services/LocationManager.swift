@@ -13,6 +13,11 @@ final class LocationManager: NSObject {
     
     var state: TrackingState = .stop
     
+//    private var startLocation: CLLocation? = nil
+//    var distance: Double? = nil
+    
+    var totalDistance: Double = 0
+    
     enum TrackingState {
         case stop
         case ready
@@ -90,6 +95,7 @@ extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             self.location = location
+            self.totalDistance += location.speed
 //            self.printData()
         }
         

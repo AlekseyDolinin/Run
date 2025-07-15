@@ -33,12 +33,16 @@ struct ReadyView: View {
                         vm.sizefontThree = 1000
                         vm.opacityThree = 0
                     } completion: {
-                        router.dismiss()
-                        router.updateRoot(.traning)
+                        dismissScreen()
                     }
                 }
             }
         }
+    }
+    
+    private func dismissScreen() {
+        router.dismiss()
+        router.updateRoot(.traning)
     }
 }
 
