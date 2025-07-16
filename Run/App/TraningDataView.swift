@@ -74,7 +74,6 @@ struct TraningDataView: View {
 
 extension TraningDataView {
     
-    @MainActor
     @Observable
     class ViewModel {
         

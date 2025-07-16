@@ -6,16 +6,10 @@ final class LocationManager: NSObject {
     static let shared = LocationManager()
     
     var manager: CLLocationManager!
-    
     var location: CLLocation!
     var timer: Timer!
     var timingTracking = 0
-    
     var state: TrackingState = .stop
-    
-//    private var startLocation: CLLocation? = nil
-//    var distance: Double? = nil
-    
     var totalDistance: Double = 0
     
     enum TrackingState {
@@ -27,7 +21,6 @@ final class LocationManager: NSObject {
     
     override init() {
         super.init()
-        print("INIT LocationManager")
         manager = CLLocationManager()
         manager.delegate = self
         // точность

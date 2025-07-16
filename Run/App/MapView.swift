@@ -4,20 +4,16 @@ import UIKit
 import MapKit
 
 struct MapView: UIViewControllerRepresentable {
-        
-    var isMonitoring: Bool
-    
+            
     func makeUIViewController(context: Context) -> UIViewController {
-        print("222: \(isMonitoring)")
-        let vc = TraningMapVC(isMonitoring: isMonitoring)
-        return vc
+        return TraningMapVC()
     }
     
     func updateUIViewController(_ viewController: UIViewController, context: Context) { }
 }
 
 #Preview {
-    MapView(isMonitoring: true)
+    MapView()
 }
 
 
@@ -25,159 +21,121 @@ final class TraningMapVC: UIViewController {
     
     private let mapView = MKMapView()
     
-    private var breadcrumbs: BreadcrumbPath!
-    private var breadcrumbPathRenderer: BreadcrumbPathRenderer?
-    private var breadcrumbBoundingPolygon: MKPolygon?
-//    private let locationManager = CLLocationManager()
-    
-    private var isMonitoring: Bool = false
-//    var startPoints: CLLocation? = nil
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        locationManager.delegate = self
         createSubviews()
     }
 
-    init(isMonitoring: Bool) {
-        super.init(nibName: nil, bundle: nil)
-        
-        print(">>> \(isMonitoring)")
-        
-        self.isMonitoring = isMonitoring
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
+//    init(isMonitoring: Bool) {
+//        super.init(nibName: nil, bundle: nil)
+//    }
+//    
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        trackingAction()
+//        trackingAction()
     }
     
-    private func trackingAction() {
-        print("trackingAction")
-        print("isMonitoring: \(isMonitoring)")
-        if isMonitoring == true {
-            startRecordingLocation()
-        } else {
-            stopRecordingLocation()
-        }
-    }
+//    private func trackingAction() {
+//        if isMonitoring == true {
+//            print("startRecordingLocation")
+//            startRecordingLocation()
+//        } else {
+//            print("stopRecordingLocation")
+//            stopRecordingLocation()
+//        }
+//    }
         
-    private func displayNewBreadcrumbOnMap(_ newLocation: CLLocation) {
-        let result = breadcrumbs.addLocation(newLocation)
-         if result.locationAdded {
-            let currentZoomScale = mapView.bounds.size.width / mapView.visibleMapRect.size.width
-            let lineWidth = MKRoadWidthAtZoomScale(currentZoomScale)
-            var areaToRedisplay = breadcrumbs.pathBounds
-            areaToRedisplay = areaToRedisplay.insetBy(
-                dx: -lineWidth,
-                dy: -lineWidth
-            )
-            breadcrumbPathRenderer?.setNeedsDisplay(areaToRedisplay)
-        }
-        if result.boundingRectChanged {
-            updateBreadcrumbBoundsOverlay()
-        }
-        if breadcrumbs.locations.count == 1 {
-            let region = MKCoordinateRegion(
-                center: newLocation.coordinate,
-                latitudinalMeters: 100,
-                longitudinalMeters: 100
-            )
-            mapView.setRegion(region, animated: true)
-            mapView.setUserTrackingMode(
-                .followWithHeading,
-                animated: true
-            )
-        }
-    }
+//    private func displayNewBreadcrumbOnMap(_ newLocation: CLLocation) {
+//        let result = breadcrumbs.addLocation(newLocation)
+//         if result.locationAdded {
+//            let currentZoomScale = mapView.bounds.size.width / mapView.visibleMapRect.size.width
+//            let lineWidth = MKRoadWidthAtZoomScale(currentZoomScale)
+//            var areaToRedisplay = breadcrumbs.pathBounds
+//            areaToRedisplay = areaToRedisplay.insetBy(
+//                dx: -lineWidth,
+//                dy: -lineWidth
+//            )
+//            breadcrumbPathRenderer?.setNeedsDisplay(areaToRedisplay)
+//        }
+//        if result.boundingRectChanged {
+//            updateBreadcrumbBoundsOverlay()
+//        }
+//        if breadcrumbs.locations.count == 1 {
+//            let region = MKCoordinateRegion(
+//                center: newLocation.coordinate,
+//                latitudinalMeters: 100,
+//                longitudinalMeters: 100
+//            )
+//            mapView.setRegion(region, animated: true)
+//            mapView.setUserTrackingMode(
+//                .followWithHeading,
+//                animated: true
+//            )
+//        }
+//    }
     
-    private func removeBreadcrumbBoundsOverlay() {
-        if let breadcrumbBoundingPolygon {
-            mapView.removeOverlay(breadcrumbBoundingPolygon)
-        }
-    }
+//    private func removeBreadcrumbBoundsOverlay() {
+//        if let breadcrumbBoundingPolygon {
+//            mapView.removeOverlay(breadcrumbBoundingPolygon)
+//        }
+//    }
+//    
+//    private func updateBreadcrumbBoundsOverlay() {
+//       removeBreadcrumbBoundsOverlay()
+//    }
     
-    private func updateBreadcrumbBoundsOverlay() {
-       removeBreadcrumbBoundsOverlay()
-    }
-    
-    private func startRecordingLocation() {
-        if let breadcrumbs {
-            mapView.removeOverlay(breadcrumbs)
-            breadcrumbPathRenderer = nil
-        }
-        breadcrumbs = BreadcrumbPath()
-        mapView.addOverlay(
-            breadcrumbs,
-            level: .aboveRoads
-        )
-//        locationManager.requestWhenInUseAuthorization()
-//        locationManager.allowsBackgroundLocationUpdates = true
-//        locationManager.pausesLocationUpdatesAutomatically = false
-//        locationManager.startUpdatingLocation()
-        isMonitoring = true
-    }
-    
-    private func stopRecordingLocation() {
-        isMonitoring = false
-//        locationManager.stopUpdatingLocation()
-    }
+//    private func startRecordingLocation() {
+//        if let breadcrumbs {
+//            mapView.removeOverlay(breadcrumbs)
+//            breadcrumbPathRenderer = nil
+//        }
+//        breadcrumbs = BreadcrumbPath()
+//        mapView.addOverlay(
+//            breadcrumbs,
+//            level: .aboveRoads
+//        )
+//        LocationManager.shared.manager.requestWhenInUseAuthorization()
+//        LocationManager.shared.manager.allowsBackgroundLocationUpdates = true
+//        LocationManager.shared.manager.pausesLocationUpdatesAutomatically = false
+//        LocationManager.shared.manager.startUpdatingLocation()
+//        isMonitoring = true
+//    }
+//    
+//    private func stopRecordingLocation() {
+//        isMonitoring = false
+//        LocationManager.shared.manager.stopUpdatingLocation()
+//    }
 }
 
 
 extension TraningMapVC: MKMapViewDelegate {
 
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        if let overlay = overlay as? BreadcrumbPath {
-            if breadcrumbPathRenderer == nil {
-                breadcrumbPathRenderer = BreadcrumbPathRenderer(crumbPath: overlay)
-            }
-            return breadcrumbPathRenderer!
-        } else if overlay is MKPolygon {
-            let pathBoundsRenderer = MKPolygonRenderer(overlay: overlay)
-            pathBoundsRenderer.fillColor = .systemBlue.withAlphaComponent(0.25)
-            return pathBoundsRenderer
-        } else {
-            fatalError("Unknown overlay \(overlay) added to the map")
-        }
-    }
-    
-//    func mapView(_ mapView: MKMapView, didFailToLocateUserWithError error: any Error) {
-//        print("didFailToLocateUserWithError")
+//    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+//        if let overlay = overlay as? BreadcrumbPath {
+//            if breadcrumbPathRenderer == nil {
+//                breadcrumbPathRenderer = BreadcrumbPathRenderer(crumbPath: overlay)
+//            }
+//            return breadcrumbPathRenderer!
+//        } else if overlay is MKPolygon {
+//            let pathBoundsRenderer = MKPolygonRenderer(overlay: overlay)
+//            pathBoundsRenderer.fillColor = .systemBlue.withAlphaComponent(0.25)
+//            return pathBoundsRenderer
+//        } else {
+//            fatalError("Unknown overlay \(overlay) added to the map")
+//        }
 //    }
 }
 
 
 extension TraningMapVC: CLLocationManagerDelegate {
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        for location in locations {
-            displayNewBreadcrumbOnMap(location)
-//            print(location)
-//            print(location.distance(from: CLLocation))
-//            if startPoints == nil {
-//                startPoints = location
-//            }
-//            print(location.distance(from: startPoints!))
-        }
-    }
-    
-//    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) { }
-    
-//    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) { }
-    
-//    func computeDistance(from points: [CLLocationCoordinate2D]) -> Double {
-//        guard let first = points.first else { return 0.0 }
-//        var prevPoint = first
-//        return points.reduce(0.0) { (count, point) -> Double in
-//            let newCount = count + CLLocation(latitude: prevPoint.latitude, longitude: prevPoint.longitude).distance(
-//                from: CLLocation(latitude: point.latitude, longitude: point.longitude))
-//            prevPoint = point
-//            return newCount
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//        for location in locations {
+//            displayNewBreadcrumbOnMap(location)
 //        }
 //    }
 }
