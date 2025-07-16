@@ -21,6 +21,8 @@ final class TraningMapVC: UIViewController {
     
     private let mapView = MKMapView()
     
+    var mapType: MKMapType = .satellite
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         createSubviews()
@@ -157,7 +159,7 @@ extension TraningMapVC {
         mapView.showsUserTrackingButton = true
         // Compass Button
         mapView.showsCompass = true
-        mapView.mapType = .mutedStandard
+        mapView.mapType = mapType
         mapView.showsTraffic = false
         mapView.showsBuildings = false
         mapView.pointOfInterestFilter = .excludingAll

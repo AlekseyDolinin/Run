@@ -8,7 +8,7 @@ final class LocationManager: NSObject {
     var manager: CLLocationManager!
     var location: CLLocation!
     var timer: Timer!
-    var timingTracking = 0
+    var timingTracking: Double = 0
     var state: TrackingState = .stop
     var totalDistance: Double = 0
     

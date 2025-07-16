@@ -32,17 +32,17 @@ struct TraningDataView: View {
                             .multilineTextAlignment(.leading)
                     }
                     VStack(alignment: .leading, spacing: -8) {
-                        Text("00:00")
+                        Text(vm.getTemp())
                             .font(.custom("MonomaniacOne-Regular", size: 60))
                             .foregroundStyle(.white)
                             .multilineTextAlignment(.leading)
                         
-                        Text("Темп (мин/км)")
+                        Text("Темп (мин)")
                             .foregroundStyle(.white.opacity(0.5))
                             .multilineTextAlignment(.leading)
                     }
                     VStack(alignment: .leading, spacing: -8) {
-                        Text("000")
+                        Text(vm.getCalories())
                             .font(.custom("MonomaniacOne-Regular", size: 60))
                             .foregroundStyle(.white)
                             .multilineTextAlignment(.leading)
@@ -93,7 +93,7 @@ extension TraningDataView {
             if LocationManager.shared.timingTracking == 0 {
                 return "00:00:00"
             } else {
-                let totalSeconds = LocationManager.shared.timingTracking
+                let totalSeconds = Int(LocationManager.shared.timingTracking)
                 let hours = String(format: "%02d", totalSeconds / 3600)
                 let minutes = String(format: "%02d", (totalSeconds % 3600) / 60)
                 let seconds = String(format: "%02d", (totalSeconds % 3600) % 60)
@@ -105,6 +105,22 @@ extension TraningDataView {
             let distanceInMeters = LocationManager.shared.totalDistance
             let distanceInKm = distanceInMeters / 1000
             return String(format: "%0.2f",  distanceInKm)
+        }
+        
+        func getTemp() -> String {
+            let timingTrackingInMinutes = LocationManager.shared.timingTracking / 60
+            let distanceInKm = LocationManager.shared.totalDistance / 1000
+            let value = timingTrackingInMinutes / distanceInKm
+            return String(format: "%0.2f",  value)
+        }
+        
+        func getCalories() -> String {
+//            let timingTrackingInMinutes = LocationManager.shared.timingTracking / 60
+//            let distanceInKm = LocationManager.shared.totalDistance / 1000
+//            let value = timingTrackingInMinutes / distanceInKm
+//            return String(format: "%0.2f",  value)
+            
+            return "000"
         }
     }
 }

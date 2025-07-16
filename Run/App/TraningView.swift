@@ -11,7 +11,7 @@ struct TraningView: View {
         ZStack {
             MapView()
             Color.black
-                .opacity(0.7) // for dark mode
+                .opacity(0.8)
             VStack(alignment: .leading, spacing: 100) {
                 TraningDataView()
                 HStack(alignment: .center, spacing: 64) {
