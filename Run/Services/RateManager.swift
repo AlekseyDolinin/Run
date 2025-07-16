@@ -6,7 +6,10 @@ final class RateManager {
     
     func incrementCount() {
         let lounchCount = UserDefaults.standard.integer(forKey: .runCount)
-        UserDefaults.standard.set(lounchCount + 1, forKey: .runCount)
+        UserDefaults.standard.set(
+            lounchCount + 1,
+            forKey: .runCount
+        )
         if lounchCount == 15 {
             showRateController()
         }
@@ -14,7 +17,9 @@ final class RateManager {
     
     private func showRateController() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
-            if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+            if let scene = UIApplication.shared.connectedScenes.first(
+                where: { $0.activationState == .foregroundActive }
+            ) as? UIWindowScene {
                 DispatchQueue.main.async {
                     AppStore.requestReview(in: scene)
                 }
