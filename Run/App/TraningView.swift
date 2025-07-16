@@ -6,9 +6,7 @@ struct TraningView: View {
     
     @EnvironmentObject var router: Router<AppRoute>
     @State private var vm = ViewModel()
-    
-    @State var isMonitoring: Bool = true
-    
+        
     var body: some View {
         ZStack {
             MapView()
@@ -20,7 +18,6 @@ struct TraningView: View {
                     if LocationManager.shared.state == .stop {
                         Button(action: {
                             LocationManager.shared.start()
-                            isMonitoring = true
                         }) {
                             Image(systemName: "figure.run").font(.system(size: 36))
                                 .tint(.white)
@@ -32,7 +29,6 @@ struct TraningView: View {
                     if LocationManager.shared.state == .tracking {
                         Button(action: {
                             LocationManager.shared.pause()
-                            isMonitoring = false
                         }) {
                             Image(systemName: "pause.fill").font(.system(size: 36))
                                 .tint(AppTheme.accentColor)
@@ -70,7 +66,6 @@ struct TraningView: View {
         .ignoresSafeArea()
         .onFirstAppear {
             LocationManager.shared.start()
-            isMonitoring = true
         }
         .alert("Завершить тренировку?", isPresented: $vm.showAlertStopTracking) {
             Button( "Отмена", role: .cancel) { }
