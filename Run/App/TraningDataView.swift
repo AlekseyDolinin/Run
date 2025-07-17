@@ -32,7 +32,7 @@ struct TraningDataView: View {
                             .multilineTextAlignment(.leading)
                     }
                     VStack(alignment: .leading, spacing: -8) {
-                        Text(vm.getTemp())
+                        Text(vm.temp)
                             .font(.custom("MonomaniacOne-Regular", size: 60))
                             .foregroundStyle(.white)
                             .multilineTextAlignment(.leading)
@@ -77,6 +77,8 @@ extension TraningDataView {
     @Observable
     class ViewModel {
         
+        var temp = "0.00"
+        
         func getSpeed() -> String {
             if LocationManager.shared.state == .tracking {
                 if let location = LocationManager.shared.location {
@@ -94,6 +96,9 @@ extension TraningDataView {
                 return "00:00:00"
             } else {
                 let totalSeconds = Int(LocationManager.shared.timingTracking)
+                if totalSeconds % 30 == 0 {
+                    getTemp()
+                }
                 let hours = String(format: "%02d", totalSeconds / 3600)
                 let minutes = String(format: "%02d", (totalSeconds % 3600) / 60)
                 let seconds = String(format: "%02d", (totalSeconds % 3600) % 60)
@@ -107,11 +112,11 @@ extension TraningDataView {
             return String(format: "%0.2f",  distanceInKm)
         }
         
-        func getTemp() -> String {
+        private func getTemp() {
             let timingTrackingInMinutes = LocationManager.shared.timingTracking / 60
             let distanceInKm = LocationManager.shared.totalDistance / 1000
             let value = timingTrackingInMinutes / distanceInKm
-            return String(format: "%0.2f",  value)
+            temp = String(format: "%0.2f",  value)
         }
         
         func getCalories() -> String {
