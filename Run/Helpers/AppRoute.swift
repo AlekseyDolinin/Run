@@ -8,6 +8,7 @@ enum AppRoute: Route {
     case settings
     case ready
     case traningDetail
+    case connectDevice
 }
 
 
@@ -24,6 +25,8 @@ struct TabbarView: View {
                 ReadyView()
             case .traningDetail:
                 TraningDetailView()
+            case .connectDevice:
+                ConnectDevice()
             default:
                 TabView {
                     StatisticView()

@@ -159,6 +159,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Run/Info.plist;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "сообщением, описывающим, почему вашему приложению нужен доступ по Bluetooth";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Это приложение использует данные о вашем здоровье";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Это приложение записывает данные о тренировках и сожженных калориях в HealthKit";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "3_Текст разрешения на использование геопозиции всегда";
@@ -198,6 +199,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Run/Info.plist;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "сообщением, описывающим, почему вашему приложению нужен доступ по Bluetooth";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Это приложение использует данные о вашем здоровье";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Это приложение записывает данные о тренировках и сожженных калориях в HealthKit";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "3_Текст разрешения на использование геопозиции всегда";
