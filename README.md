@@ -9,3 +9,4 @@
 ![MapKit](https://img.shields.io/badge/MapKit-9C354A?style=for-the-badge&logo=CoreLocation&logoColor=ffffff)
 ![HealthKit](https://img.shields.io/badge/HealthKit-9C354A?style=for-the-badge&logo=HealthKit&logoColor=ffffff)
 ![SwiftData](https://img.shields.io/badge/SwiftData-9C354A?style=for-the-badge&logo=SwiftData&logoColor=ffffff)
+![Lottie](https://img.shields.io/badge/Lottie-9C354A?style=for-the-badge&logo=Lottie&logoColor=ffffff)
