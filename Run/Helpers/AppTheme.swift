@@ -9,7 +9,7 @@ final class AppTheme {
     static var bg_top_bar: Color = Color.init(hex: "#101010")
     static var bg_plate: Color = Color.init(hex: "#1d1d1d")
 
-    static var accentColor: Color = Color.pink
+    static var accentColor: Color = Color.init(hex: "#54A4FB")
     
 }
 
