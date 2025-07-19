@@ -2,7 +2,7 @@ import SwiftUI
 import Voyager
 
 struct SettingView: View {
-        
+    
     @EnvironmentObject var router: Router<AppRoute>
     @State private var vm = ViewModel()
     
@@ -23,7 +23,7 @@ struct SettingView: View {
                     .cornerRadius(16)
                     
                     Button(action: {
-//                        BluetoothManager.shared.startScaning()
+                        //                        BluetoothManager.shared.startScaning()
                     }) {
                         Text("CHECK PAIR WATCH DEVICE")
                             .foregroundStyle(.white)

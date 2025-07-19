@@ -164,10 +164,11 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Run/Info.plist;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "сообщением, описывающим, почему вашему приложению нужен доступ по Bluetooth";
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Здесь текст для разрешения к данным о здоровье";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Это приложение использует данные о вашем здоровье";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Это приложение записывает данные о тренировках и сожженных калориях в HealthKit";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "3_Текст разрешения на использование геопозиции всегда";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "2_Текст разрешения на использование геопозиции ";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Для определения результатов тренировки Runstatic небходим доступ к геопозиции";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -204,10 +205,11 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Run/Info.plist;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "сообщением, описывающим, почему вашему приложению нужен доступ по Bluetooth";
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Здесь текст для разрешения к данным о здоровье";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Это приложение использует данные о вашем здоровье";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Это приложение записывает данные о тренировках и сожженных калориях в HealthKit";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "3_Текст разрешения на использование геопозиции всегда";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "2_Текст разрешения на использование геопозиции ";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Для определения результатов тренировки Runstatic небходим доступ к геопозиции";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

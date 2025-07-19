@@ -23,7 +23,6 @@ final class LocationManager: NSObject {
         super.init()
         manager = CLLocationManager()
         manager.delegate = self
-        // точность
         manager.desiredAccuracy = kCLLocationAccuracyBest
     }
     
@@ -62,43 +61,47 @@ final class LocationManager: NSObject {
         }
     }
     
-    
+    func checkAuthorization() -> Bool {
+        switch manager.authorizationStatus {
+        case .authorizedWhenInUse, .authorizedAlways:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 
 extension LocationManager: CLLocationManagerDelegate {
     
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch manager.authorizationStatus {
-        case .authorizedWhenInUse:
-            print("Пользователь разрешил использовать геопозицию")
-        case .restricted, .denied:
-            print("Пользователь запретил использовать геопозицию")
-        case .notDetermined:
-            print("Разрешение еще не определено")
-        default:
-            break
-        }
-    }
-    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Location update failed: \(error)")
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailRangingFor beaconConstraint: CLBeaconIdentityConstraint, error: any Error) {
+        print("1")
+        print(beaconConstraint)
+        print(error)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: any Error) {
+        print("2")
+        print(region)
+        print(error)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFinishDeferredUpdatesWithError error: (any Error)?) {
+        print("3")
+        print(error)
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             self.location = location
             self.totalDistance += location.speed
-//            self.printData()
         }
         
     }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-//        print(">>>>> \(newHeading.trueHeading)")
-    }
-    
-    
     
     private func printData() {
         // Возвращает высоту местоположения.

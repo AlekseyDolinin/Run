@@ -13,11 +13,7 @@ struct SelectTypeTraningView: View {
                 .ignoresSafeArea()
             VStack(alignment: .leading) {
                 Button(action: {
-                    if vm.checkAvailableLocation() == true {
-                        router.present(.ready, option: .fullscreenCover)
-                    } else {
-                        LocationManager.shared.manager.requestAlwaysAuthorization()
-                    }
+                    router.present(.ready, option: .fullscreenCover)
                 }) {
                     Image(systemName: "figure.run").font(.system(size: 40))
                         .tint(.white)
@@ -26,6 +22,17 @@ struct SelectTypeTraningView: View {
                 .background(AppTheme.accentColor)
                 .cornerRadius(16)
             }
+        }
+        .onFirstAppear {
+            vm.checkServicesAuthorization()
+        }
+        
+        .onChange(of: vm.showLocationDescriptionView) {
+            router.present(.locationDescriptionView, option: .fullscreenCover)
+        }
+        
+        .onChange(of: vm.showHealthDescriptionView) {
+            router.present(.healthKitDescriptionView, option: .fullscreenCover)
         }
     }
 }
@@ -40,23 +47,31 @@ extension SelectTypeTraningView {
     @Observable
     class ViewModel {
         
-        func checkAvailableLocation() -> Bool {
-            print("checkAvailableLocation")
-#if targetEnvironment(simulator)
-            return true
-#else
-            if CLLocationManager.headingAvailable() {
-                switch LocationManager.shared.manager.authorizationStatus {
-                case .authorizedWhenInUse, .authorizedAlways:
-                    return true
-                default:
-                    return false
-                }
+        var showLocationDescriptionView = false
+        var showHealthDescriptionView = false
+        
+        func checkServicesAuthorization() {
+            if LocationManager.shared.checkAuthorization() == false {
+                showLocationDescription()
             } else {
-                return false
-                print("Disable compass features")
+                checkAuthorizationHealhkit()
             }
-#endif
+        }
+        
+        private func showLocationDescription() {
+            Task(priority: .userInitiated) {
+                try? await Task.sleep(nanoseconds: 200_000_000)
+                showLocationDescriptionView = true
+            }
+        }
+        
+        func checkAuthorizationHealhkit() {
+            if HealthKitManager.shared.checkAuthorization() == false {
+                Task(priority: .userInitiated) {
+                    try? await Task.sleep(nanoseconds: 200_000_000)
+                    showHealthDescriptionView = true
+                }
+            }
         }
     }
 }
