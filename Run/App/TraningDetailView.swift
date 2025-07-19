@@ -23,7 +23,40 @@ struct TraningDetailView: View {
         }
         .navigationBarHidden(true)
         .onFirstAppear {
+            HealthKitManager.shared.getHeight()
+            HealthKitManager.shared.getBodyMass()
+            HealthKitManager.shared.getCountSteps(
+                start: vm.getPeriodTraning().start,
+                finish: vm.getPeriodTraning().finish
+            )
+            HealthKitManager.shared.getActiveEnergyBurned(
+                start: vm.getPeriodTraning().start,
+                finish: vm.getPeriodTraning().finish
+            )
+            HealthKitManager.shared.getHeartRate(
+                start: vm.getPeriodTraning().start,
+                finish: vm.getPeriodTraning().finish
+            )
+            HealthKitManager.shared.getHeartRate(
+                start: vm.getPeriodTraning().start,
+                finish: vm.getPeriodTraning().finish
+            )
             vm.getSteps()
+        }
+        .onChange(of: HealthKitManager.shared.height) { _, height in
+            print("height: \(height)")
+        }
+        .onChange(of: HealthKitManager.shared.bodyMass) { _, bodyMass in
+            print("bodyMass: \(bodyMass)")
+        }
+        .onChange(of: HealthKitManager.shared.stepCount) { _, stepCount in
+            print("stepCount: \(stepCount)")
+        }
+        .onChange(of: HealthKitManager.shared.activeEnergyBurned) { _, activeEnergyBurned in
+            print("activeEnergyBurned: \(activeEnergyBurned)")
+        }
+        .onChange(of: HealthKitManager.shared.heartRate) { _, heartRate in
+            print("heartRate: \(heartRate)")
         }
     }
 }
@@ -38,48 +71,60 @@ extension TraningDetailView {
     @Observable
     class ViewModel {
         
-        func getSteps() {
-            
+        
+        func getPeriodTraning() -> (start: Date, finish: Date) {
             let dateFormatter = DateFormatter()
             dateFormatter.locale = Locale(identifier: "en_US_POSIX")
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-            
             let startString = "2025-07-18T18:17:00"
             let startDate: Date = dateFormatter.date(from: startString)!
-            
             let finishStaring = "2025-07-18T18:55:43"
             let finishDate: Date = dateFormatter.date(from: finishStaring)!
+            return (start: startDate, finish: finishDate)
+        }
             
-            print("startDate: \(startDate)")
-            print("finishDate: \(finishDate)")
+        func getSteps() {
             
-            HealthKitManager.shared.getSteps(start: startDate, finish: finishDate) { count in
-                print("count steps: \(count)")
-                let height = 1.77
-                let lenghtStep = height / 100.0 * 55
-                print("lenghtStep: \(lenghtStep)")
-                let distance = count * lenghtStep
-                print("distance: \(distance)")
-            }
+//            let dateFormatter = DateFormatter()
+//            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+//            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+//            
+//            let startString = "2025-07-18T18:17:00"
+//            let startDate: Date = dateFormatter.date(from: startString)!
+//            
+//            let finishStaring = "2025-07-18T18:55:43"
+//            let finishDate: Date = dateFormatter.date(from: finishStaring)!
+//            
+//            print("startDate: \(startDate)")
+//            print("finishDate: \(finishDate)")
             
-            HealthKitManager.shared.getHeartRate(start: startDate, finish: finishDate) { count in
-                print("HeartRate: \(count)")
-            }
-            HealthKitManager.shared.getHeight { height in
-                print("height: \(height)")
-            }
-            HealthKitManager.shared.getBodyMass { mass in
-                print("mass: \(mass)")
-            }
-            HealthKitManager.shared.getRunningStrideLength(start: startDate, finish: finishDate) { runningStrideLength in
-                print("runningStrideLength: \(runningStrideLength)")
-            }
-            HealthKitManager.shared.getActiveEnergyBurned(start: startDate, finish: finishDate) { energy in
-                print("energy: \(energy)")
-            }
-            HealthKitManager.shared.getActiveEnergyBurned(start: startDate, finish: finishDate) { kilocalorie in
-                print("kilocalorie: \(kilocalorie)")
-            }
+//            HealthKitManager.shared.getSteps(start: startDate, finish: finishDate) { count in
+//                print("count steps: \(count)")
+//                let height = 1.77
+//                let lenghtStep = height / 100.0 * 55
+//                print("lenghtStep: \(lenghtStep)")
+//                let distance = count * lenghtStep
+//                print("distance: \(distance)")
+//            }
+            
+//            HealthKitManager.shared.getHeartRate(start: startDate, finish: finishDate) { count in
+//                print("HeartRate: \(count)")
+//            }
+//            HealthKitManager.shared.getHeight { height in
+//                print("height: \(height)")
+//            }
+//            HealthKitManager.shared.getBodyMass { mass in
+//                print("mass: \(mass)")
+//            }
+//            HealthKitManager.shared.getRunningStrideLength(start: startDate, finish: finishDate) { runningStrideLength in
+//                print("runningStrideLength: \(runningStrideLength)")
+//            }
+//            HealthKitManager.shared.getActiveEnergyBurned(start: startDate, finish: finishDate) { energy in
+//                print("energy: \(energy)")
+//            }
+//            HealthKitManager.shared.getActiveEnergyBurned(start: startDate, finish: finishDate) { kilocalorie in
+//                print("kilocalorie: \(kilocalorie)")
+//            }
         }
     }
 }

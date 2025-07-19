@@ -8,8 +8,11 @@ final class HealthKitManager: NSObject {
     
     var manager: HKHealthStore!
     
-    let stepCount = HKObjectType.quantityType(forIdentifier: .stepCount)!
-    let height = HKObjectType.quantityType(forIdentifier: .height)!
+    var height: Double = 0.0
+    var bodyMass: Double = 0.0
+    var stepCount: Double = 0.0
+    var activeEnergyBurned: Double = 0.0
+    var heartRate: Double = 0.0
     
     override init() {
         super.init()
@@ -17,6 +20,7 @@ final class HealthKitManager: NSObject {
     }
     
     func checkAuthorization() -> Bool {
+        let stepCount = HKObjectType.quantityType(forIdentifier: .stepCount)!
         switch manager.authorizationStatus(for: stepCount) {
         case .sharingAuthorized:
             return true
@@ -35,8 +39,7 @@ final class HealthKitManager: NSObject {
             HKSampleType.quantityType(forIdentifier: .bodyMass)!,
             HKSampleType.quantityType(forIdentifier: .stepCount)!,
             HKSampleType.quantityType(forIdentifier: .heartRate)!,
-            HKSampleType.quantityType(forIdentifier: .activeEnergyBurned)!,
-            HKSampleType.quantityType(forIdentifier: .runningStrideLength)!
+            HKSampleType.quantityType(forIdentifier: .activeEnergyBurned)!
         ]
         Task(priority: .userInitiated) {
             try await manager.requestAuthorization(
@@ -50,129 +53,150 @@ final class HealthKitManager: NSObject {
 
 extension HealthKitManager {
     
-    func getHeight(completion: @escaping (Double?) -> Void) {
-        let query = HKSampleQuery(
-            sampleType: HKSampleType.quantityType(forIdentifier: .height)!,
-            predicate: nil,
-            limit: 1,
-            sortDescriptors: nil
-        ) { (query, results, error) in
-            if let result = results?.first as? HKQuantitySample {
-                let height = result.quantity.doubleValue(for: HKUnit.meterUnit(with: .centi))
-                completion(height)
-            } else {
-                completion(nil)
-            }
-        }
-        manager.execute(query)
+    func getHeight(){
+        createSampleQuery(identifier: .height)
     }
     
-    func getBodyMass(completion: @escaping (Double?) -> Void) {
+    func getBodyMass(){
+        createSampleQuery(identifier: .bodyMass)
+    }
+
+    func getCountSteps(start: Date, finish: Date) {
+        createStatisticsQuery(
+            start: start,
+            finish: finish,
+            identifier: .stepCount,
+            options: .cumulativeSum
+        )
+    }
+        
+    func getActiveEnergyBurned(start: Date, finish: Date) {
+        createStatisticsQuery(
+            start: start,
+            finish: finish,
+            identifier: .activeEnergyBurned,
+            options: .cumulativeSum
+        )
+    }
+    
+    func getHeartRate(start: Date, finish: Date) {
+        createStatisticsQuery(
+            start: start,
+            finish: finish,
+            identifier: .heartRate,
+            options: .discreteAverage
+        )
+    }
+    
+    //
+    private func createSampleQuery(identifier: HKQuantityTypeIdentifier) {
         let query = HKSampleQuery(
-            sampleType: HKSampleType.quantityType(forIdentifier: .bodyMass)!,
+            sampleType: HKSampleType.quantityType(forIdentifier: identifier)!,
             predicate: nil,
             limit: 1,
             sortDescriptors: nil
-        ) { (query, results, error) in
-            if let result = results?.first as? HKQuantitySample {
-                let mass = result.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))
-                completion(mass)
-            } else {
-                completion(nil)
-            }
+        ) { (query, result, error)  in
+            self.parseResultSampleQuery(result, identifier: identifier)
         }
         manager.execute(query)
     }
     
     //
-    func getSteps(start: Date, finish: Date, completion: @escaping (Double) -> Void) {
+    private func createStatisticsQuery(
+        start: Date,
+        finish: Date,
+        identifier: HKQuantityTypeIdentifier,
+        options: HKStatisticsOptions
+    ) {
         let predicate = HKQuery.predicateForSamples(
             withStart: start,
             end: finish,
             options: .strictStartDate
         )
         let query = HKStatisticsQuery(
-            quantityType: HKQuantityType(.stepCount),
+            quantityType: HKQuantityType(identifier),
             quantitySamplePredicate: predicate,
-            options: .cumulativeSum
-        ) { _, result, _ in
-            guard let result = result, let sum = result.sumQuantity() else {
-                completion(0.0)
-                return
+            options: options
+        ) { (query, result, error) in
+            if error != nil {
+                print("---------------------------")
+                print(identifier)
+                print(query)
+                print(result)
+                print(error)
+                print("---------------------------")
             }
-            completion(sum.doubleValue(for: HKUnit.count()))
+            self.parseResultStatisticsQuery(
+                result,
+                identifier: identifier
+            )
         }
         manager.execute(query)
     }
     
     //
-    func getHeartRate(start: Date, finish: Date, completion: @escaping (Double?) -> Void) {
-        let predicate = HKQuery.predicateForSamples(
-            withStart: start,
-            end: finish,
-            options: .strictStartDate)
-        let query = HKStatisticsQuery(
-            quantityType: HKQuantityType(.heartRate),
-            quantitySamplePredicate: predicate,
-            options: .discreteAverage
-        ) { query, results, error in
-            
-            print("result getHeartRate: \(results)")
-            
-            if results == nil {
-                completion(nil)
-            } else {
-                completion(999.999)
-            }
+    private func parseResultSampleQuery(
+        _ result: [HKSample]?,
+        identifier: HKQuantityTypeIdentifier
+    ) {
+        switch identifier {
+        case .height:
+            parseHeight(result)
+        case .bodyMass:
+            parseBodyMass(result)
+        default:
+            break
         }
-        manager.execute(query)
     }
     
     //
-    func getRunningStrideLength(start: Date, finish: Date, completion: @escaping (Double?) -> Void) {
-        let predicate = HKQuery.predicateForSamples(
-            withStart: start,
-            end: finish,
-            options: .strictStartDate)
-        let query = HKSampleQuery(
-            sampleType: HKSampleType.quantityType(forIdentifier: .runningStrideLength)!,
-            predicate: predicate,
-            limit: 1,
-            sortDescriptors: nil
-        ) { (query, results, error) in
-            
-            print("results runningStrideLength: \(results)")
-            
-//            if let result = results?.first as? HKQuantitySample {
-//                let height = result.quantity.doubleValue(for: HKUnit.meterUnit(with: .centi))
-//                completion(height)
-//            } else {
-//                completion(nil)
-//            }
+    private func parseResultStatisticsQuery(
+        _ result: HKStatistics?,
+        identifier: HKQuantityTypeIdentifier
+    ) {
+        switch identifier {
+        case .stepCount:
+            parseStepCount(result)
+        case .activeEnergyBurned:
+            parseActiveEnergyBurned(result)
+        case .heartRate:
+            parseHeartRate(result)
+        default:
+            break
         }
-        manager.execute(query)
     }
-
+    
     //
-    func getActiveEnergyBurned(start: Date, finish: Date, completion: @escaping (Double?) -> Void) {
+    private func parseHeight(_ result: [HKSample]?) {
+        if let res = result?.first as? HKQuantitySample {
+            height = res.quantity.doubleValue(for: HKUnit.meterUnit(with: .centi))
+        }
+    }
+    
+    //
+    private  func parseBodyMass(_ result: [HKSample]?) {
+        if let res = result?.first as? HKQuantitySample {
+            bodyMass = res.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))
+        }
+    }
+    
+    //
+    private func parseStepCount(_ result: HKStatistics?) {
+        if let sum = result?.sumQuantity() {
+            stepCount = sum.doubleValue(for: HKUnit.count())
+        }
+    }
+    
+    //
+    private  func parseActiveEnergyBurned(_ result: HKStatistics?) {
+        if let sum = result?.sumQuantity() {
+            activeEnergyBurned = sum.doubleValue(for: HKUnit.kilocalorie())
+        }
+    }
+    
+    //
+    private func parseHeartRate(_ result: HKStatistics?) {
+        print("result HeartRate: \(result)")
+    }
         
-        let predicate = HKQuery.predicateForSamples(
-            withStart: start,
-            end: finish,
-            options: [])
-        let query = HKSampleQuery(
-            sampleType: HKSampleType.quantityType(forIdentifier: .activeEnergyBurned)!,
-            predicate: predicate,
-            limit: 0,
-            sortDescriptors: nil,
-            resultsHandler: { (query, results, error) in
-                if let results = results {
-                    let listHKQuantitySample = results as! [HKQuantitySample]
-                    let values = listHKQuantitySample.map({ $0.quantity.doubleValue(for: HKUnit.kilocalorie()) })
-                    let kilocalorieTotal = values.reduce(0, +)
-                    completion(kilocalorieTotal)
-                }
-            })
-        manager.execute(query)
-    }
 }
