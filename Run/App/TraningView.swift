@@ -7,28 +7,20 @@ struct TraningView: View {
     @EnvironmentObject var router: Router<AppRoute>
     @State private var vm = ViewModel()
         
+    @State private var traning = Traning()
+    
     var body: some View {
         ZStack {
             MapView()
             Color.black
                 .opacity(0.8)
             VStack(alignment: .leading, spacing: 100) {
-                TraningDataView()
+                TraningDataView(traning: traning)
                 HStack(alignment: .center, spacing: 64) {
-                    if LocationManager.shared.state == .stop {
+                    if vm.stateTracking == .tracking {
                         Button(action: {
-                            LocationManager.shared.start()
-                        }) {
-                            Image(systemName: "figure.run").font(.system(size: 36))
-                                .tint(.white)
-                                .frame(width: 80, height: 80)
-                        }
-                        .background(AppTheme.accentColor)
-                        .cornerRadius(16)
-                    }
-                    if LocationManager.shared.state == .tracking {
-                        Button(action: {
-                            LocationManager.shared.pause()
+                            vm.stateTracking = .paused
+                            traning.pause()
                         }) {
                             Image(systemName: "pause.fill").font(.system(size: 36))
                                 .tint(AppTheme.accentColor)
@@ -37,7 +29,7 @@ struct TraningView: View {
                         .background(.white)
                         .cornerRadius(16)
                     }
-                    if LocationManager.shared.state == .paused {
+                    if vm.stateTracking == .paused {
                         Button(action: {
                             vm.showAlertStopTracking = true
                         }) {
@@ -48,7 +40,8 @@ struct TraningView: View {
                         .background(.white)
                         .cornerRadius(16)
                         Button(action: {
-                            LocationManager.shared.resume()
+                            vm.stateTracking = .tracking
+                            traning.resume()
                         }) {
                             Image(systemName: "play.fill").font(.system(size: 38))
                                 .tint(AppTheme.accentColor)
@@ -65,12 +58,12 @@ struct TraningView: View {
         }
         .ignoresSafeArea()
         .onFirstAppear {
-            LocationManager.shared.start()
+            traning.start()
         }
         .alert("Завершить тренировку?", isPresented: $vm.showAlertStopTracking) {
             Button( "Отмена", role: .cancel) { }
             Button( "Завершить", role: .destructive) {
-                LocationManager.shared.stop()
+                traning.stop()
                 router.updateRoot(.statistic)
                 router.present(.traningDetail)
             }
@@ -89,5 +82,7 @@ extension TraningView {
     class ViewModel {
         
         var showAlertStopTracking = false
+        var stateTracking: TrackingState = .tracking
+        
     }
 }

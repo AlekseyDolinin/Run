@@ -7,17 +7,10 @@ final class LocationManager: NSObject {
     
     var manager: CLLocationManager!
     var location: CLLocation!
-    var timer: Timer!
+//    var timer: Timer!
     var timingTracking: Double = 0
-    var state: TrackingState = .stop
+//    var state: TrackingState = .stop
     var totalDistance: Double = 0
-    
-    enum TrackingState {
-        case stop
-        case ready
-        case tracking
-        case paused
-    }
     
     override init() {
         super.init()
@@ -26,40 +19,40 @@ final class LocationManager: NSObject {
         manager.desiredAccuracy = kCLLocationAccuracyBest
     }
     
-    func start() {
-        state = .tracking
-        manager.startUpdatingLocation()
-        startTimerTracking()
-    }
+//    func start() {
+////        state = .tracking
+//        manager.startUpdatingLocation()
+////        startTimerTracking()
+//    }
     
-    func pause() {
-        state = .paused
-        manager.stopUpdatingLocation()
-        timer.invalidate()
-    }
+//    func pause() {
+////        state = .paused
+////        manager.stopUpdatingLocation()
+////        timer.invalidate()
+//    }
     
-    func resume() {
-        state = .tracking
-        manager.startUpdatingLocation()
-        startTimerTracking()
-    }
+//    func resume() {
+////        state = .tracking
+////        manager.startUpdatingLocation()
+////        startTimerTracking()
+//    }
     
-    func stop() {
-        state = .stop
-        manager.stopUpdatingLocation()
-        timer.invalidate()
-        timer = nil
-        timingTracking = 0
-    }
+//    func stop() {
+////        state = .stop
+////        manager.stopUpdatingLocation()
+////        timer.invalidate()
+////        timer = nil
+////        timingTracking = 0
+//    }
     
-    private func startTimerTracking() {
-        timer = Timer.scheduledTimer(
-            withTimeInterval: 1.0,
-            repeats: true
-        ) { _ in
-            self.timingTracking += 1
-        }
-    }
+//    private func startTimerTracking() {
+//        timer = Timer.scheduledTimer(
+//            withTimeInterval: 1.0,
+//            repeats: true
+//        ) { _ in
+//            self.timingTracking += 1
+//        }
+//    }
     
     func checkAuthorization() -> Bool {
         switch manager.authorizationStatus {

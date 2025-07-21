@@ -5,6 +5,9 @@ struct TraningDataView: View {
     
     @EnvironmentObject var router: Router<AppRoute>
     @State private var vm = ViewModel()
+    var traning: Traning
+    
+    @State private var duration = ""
     
     var body: some View {
         ZStack {
@@ -12,7 +15,7 @@ struct TraningDataView: View {
                 Spacer()
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading, spacing: -8) {
-                        Text(vm.getTimingTracking())
+                        Text(duration)
                             .font(.custom("MonomaniacOne-Regular", size: 60))
                             .foregroundStyle(.white)
                             .multilineTextAlignment(.leading)
@@ -22,7 +25,7 @@ struct TraningDataView: View {
                             .multilineTextAlignment(.leading)
                     }
                     VStack(alignment: .leading, spacing: -8) {
-                        Text(vm.getTrackingDistance())
+                        Text(String(format: "%0.2f", traning.distance_km))
                             .font(.custom("MonomaniacOne-Regular", size: 60))
                             .foregroundStyle(.white)
                             .multilineTextAlignment(.leading)
@@ -32,7 +35,7 @@ struct TraningDataView: View {
                             .multilineTextAlignment(.leading)
                     }
                     VStack(alignment: .leading, spacing: -8) {
-                        Text(vm.temp)
+                        Text(String(format: "%0.2f",  traning.tempAverage))
                             .font(.custom("MonomaniacOne-Regular", size: 60))
                             .foregroundStyle(.white)
                             .multilineTextAlignment(.leading)
@@ -42,7 +45,7 @@ struct TraningDataView: View {
                             .multilineTextAlignment(.leading)
                     }
                     VStack(alignment: .leading, spacing: -8) {
-                        Text(vm.getCalories())
+                        Text(String(format: "%0.2f",  traning.activeEnergyBurned))
                             .font(.custom("MonomaniacOne-Regular", size: 60))
                             .foregroundStyle(.white)
                             .multilineTextAlignment(.leading)
@@ -52,7 +55,7 @@ struct TraningDataView: View {
                             .multilineTextAlignment(.leading)
                     }
                     VStack(alignment: .leading, spacing: -8) {
-                        Text(vm.getSpeed())
+                        Text(String(format: "%0.2f",  traning.speedAverage))
                             .font(.custom("MonomaniacOne-Regular", size: 60))
                             .foregroundStyle(.white)
                             .multilineTextAlignment(.leading)
@@ -64,11 +67,14 @@ struct TraningDataView: View {
                 }
             }
         }
+        .onReceive(traning.$duration) { value in
+            self.duration = vm.getDuration(value)
+        }
     }
 }
 
 #Preview {
-    TraningDataView()
+    TraningDataView(traning: Traning())
 }
 
 
@@ -76,56 +82,41 @@ extension TraningDataView {
     
     @Observable
     class ViewModel {
-        
-        var temp = "0.00"
-        
-        func getSpeed() -> String {
-            if LocationManager.shared.state == .tracking {
-                if let location = LocationManager.shared.location {
-                    return String(format: "%0.2f",  location.speed * 3.6)
-                } else {
-                    return "0.00"
-                }
-            } else {
-                return "0.00"
-            }
-        }
-        
-        func getTimingTracking() -> String {
-            if LocationManager.shared.timingTracking == 0 {
+                    
+        func getDuration(_ second: Int) -> String {
+            if second == 0 {
                 return "00:00:00"
             } else {
-                let totalSeconds = Int(LocationManager.shared.timingTracking)
-                if totalSeconds % 30 == 0 {
-                    getTemp()
-                }
-                let hours = String(format: "%02d", totalSeconds / 3600)
-                let minutes = String(format: "%02d", (totalSeconds % 3600) / 60)
-                let seconds = String(format: "%02d", (totalSeconds % 3600) % 60)
+                let hours = String(format: "%02d", second / 3600)
+                let minutes = String(format: "%02d", (second % 3600) / 60)
+                let seconds = String(format: "%02d", (second % 3600) % 60)
                 return "\(hours):\(minutes):\(seconds)"
             }
         }
         
-        func getTrackingDistance() -> String {
-            let distanceInMeters = LocationManager.shared.totalDistance
-            let distanceInKm = distanceInMeters / 1000
-            return String(format: "%0.2f",  distanceInKm)
-        }
         
-        private func getTemp() {
-            let timingTrackingInMinutes = LocationManager.shared.timingTracking / 60
-            let distanceInKm = LocationManager.shared.totalDistance / 1000
-            let value = timingTrackingInMinutes / distanceInKm
-            temp = String(format: "%0.2f",  value)
-        }
+//        func getSpeed() -> String {
+//            if LocationManager.shared.state == .tracking {
+//                if let location = LocationManager.shared.location {
+//                    return String(format: "%0.2f",  location.speed * 3.6)
+//                } else {
+//                    return "0.00"
+//                }
+//            } else {
+//                return "0.00"
+//            }
+//        }
         
-        func getCalories() -> String {
-//            let timingTrackingInMinutes = LocationManager.shared.timingTracking / 60
-//            let distanceInKm = LocationManager.shared.totalDistance / 1000
-//            let value = timingTrackingInMinutes / distanceInKm
-//            return String(format: "%0.2f",  value)
-            
-            return "000"
-        }
+
+
+        
+//        func getCalories() -> String {
+////            let timingTrackingInMinutes = LocationManager.shared.timingTracking / 60
+////            let distanceInKm = LocationManager.shared.totalDistance / 1000
+////            let value = timingTrackingInMinutes / distanceInKm
+////            return String(format: "%0.2f",  value)
+//            
+//            return "000"
+//        }
     }
 }
