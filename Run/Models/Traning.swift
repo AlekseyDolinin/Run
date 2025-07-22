@@ -38,7 +38,7 @@ class Traning {
     }
     
     private var timer: Timer!
-    private var periodUpdate = 30
+    private var periodUpdate = 10
     
 }
 

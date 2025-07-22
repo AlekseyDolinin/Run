@@ -16,14 +16,14 @@ struct TraningView: View {
                 .opacity(0.8)
             VStack(alignment: .leading, spacing: 100) {
                 TraningDataView(traning: traning)
-                HStack(alignment: .center, spacing: 64) {
+                HStack(alignment: .center, spacing: 40) {
                     if vm.stateTracking == .tracking {
                         Button(action: {
                             vm.stateTracking = .paused
                             traning.pause()
                         }) {
                             Image(systemName: "pause.fill").font(.system(size: 36))
-                                .tint(AppTheme.accentColor)
+                                .tint(AppTheme.bg_one)
                                 .frame( width: 80, height: 80)
                         }
                         .background(.white)
@@ -33,22 +33,33 @@ struct TraningView: View {
                         Button(action: {
                             vm.showAlertStopTracking = true
                         }) {
-                            Image(systemName: "stop.fill").font(.system(size: 36))
-                                .tint(AppTheme.accentColor)
+                            Image(systemName: "stop.circle")
+                                .fontWeight(.light)
+                                .font(.system(size: 56))
+                                .tint(.white)
                                 .frame( width: 80, height: 80)
+                                .opacity(0.75)
                         }
-                        .background(.white)
-                        .cornerRadius(16)
                         Button(action: {
                             vm.stateTracking = .tracking
                             traning.resume()
                         }) {
                             Image(systemName: "play.fill").font(.system(size: 38))
-                                .tint(AppTheme.accentColor)
+                                .tint(AppTheme.bg_one)
                                 .frame( width: 80, height: 80)
                         }
                         .background(.white)
                         .cornerRadius(16)
+                        Button(action: {
+                            router.present(.modalSettingTraning, option: .popover)
+                        }) {
+                            Image(systemName: "gearshape")
+                                .fontWeight(.light)
+                                .font(.system(size: 48))
+                                .tint(.white)
+                                .frame( width: 80, height: 80)
+                                .opacity(0.75)
+                        }
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: 64)

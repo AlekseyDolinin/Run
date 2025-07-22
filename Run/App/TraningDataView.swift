@@ -10,6 +10,7 @@ struct TraningDataView: View {
     @State private var duration = ""
     
     var body: some View {
+//        let _ = Self._printChanges()
         ZStack {
             VStack(alignment: .leading) {
                 Spacer()
