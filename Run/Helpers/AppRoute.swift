@@ -11,6 +11,7 @@ enum AppRoute: Route {
     case connectDevice
     case locationDescriptionView
     case healthKitDescriptionView
+    case modalSettingTraning
 }
 
 
@@ -33,6 +34,8 @@ struct TabbarView: View {
                 LocationDescriptionView()
             case .healthKitDescriptionView:
                 HealthKitDescriptionView()
+            case .modalSettingTraning:
+                ModalSettingTraning()
             default:
                 TabView {
                     StatisticView()
