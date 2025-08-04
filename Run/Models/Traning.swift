@@ -6,35 +6,35 @@ class Traning {
     var finishDate: Date?
     @Published var duration: Int
     var stateTracking: TrackingState
-    var stepCount: Double
-    var activeEnergyBurned: Double
+    var stepCount: Int
     var heartRateAverage: Double
     var distance_km: Double
     var tempAverage: Double
     var speedAverage: Double
+    var calories: Int
     
     init(
         startDate: Date = Date.now,
         finishDate: Date? = nil,
         duration: Int = 0,
         stateTracking: TrackingState = .paused,
-        stepCount: Double = 0,
-        activeEnergyBurned: Double = 0,
+        stepCount: Int = 0,
         heartRateAverage: Double = 0,
         distance_km: Double = 0,
         tempAverage: Double = 0,
-        speedAverage: Double = 0
+        speedAverage: Double = 0,
+        calories: Int = 0
     ) {
         self.startDate = startDate
         self.finishDate = finishDate
         self.duration = duration
         self.stateTracking = stateTracking
         self.stepCount = stepCount
-        self.activeEnergyBurned = activeEnergyBurned
         self.heartRateAverage = heartRateAverage
         self.distance_km = distance_km
         self.tempAverage = tempAverage
         self.speedAverage = speedAverage
+        self.calories = calories
     }
     
     private var timer: Timer!
@@ -86,18 +86,24 @@ extension Traning {
             self.updateDistance()
             self.updateTemp()
             self.updateSpeed()
+            self.updateCalories()
         }
     }
     
     private func updateDistance() {
         let distanceInMeters = LocationManager.shared.totalDistance
-        self.distance_km = distanceInMeters / 1000
+        distance_km = distanceInMeters / 1000
+        if distance_km < 0 {
+            print("Невозможно получить дистанцию из Core Location")
+            print("Необходимо расчитать достанцию по шагам")
+        }
     }
     
     private func updateTemp() {
         if duration % periodUpdate != 0 { return }
         let timingTrackingInMinutes = Double(duration) / 60.0
-        self.tempAverage = timingTrackingInMinutes / distance_km
+        tempAverage = timingTrackingInMinutes / distance_km
+        print("tempAverage: \(tempAverage)")
     }
     
     private func updateSpeed() {
@@ -107,6 +113,17 @@ extension Traning {
         } else {
             speedAverage = 0
         }
+        print("speedAverage: \(speedAverage)")
+    }
+    
+    private func updateCalories() {
+//        Расход энергии (ккал) = 0,014 * М * t * (0,12 * П - 7)
+//        М - вес тела человека, t - время бега, П - средний пульс во время бега
+
+//        Для приблизительного расчета сжигаемых калорий при беге можно использовать формулу: 1 килокалория (ккал) на 1 килограмм веса на 1 километр пути. Более точные расчеты требуют учета скорости, рельефа, погодных условий и индивидуальных особенностей.
+        
+        if duration % periodUpdate != 0 { return }
+        calories = Int(HealthKitManager.shared.bodyMass * distance_km)
     }
     
     private func saveTraning() async {

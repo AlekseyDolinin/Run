@@ -46,12 +46,12 @@ struct TraningDataView: View {
                             .multilineTextAlignment(.leading)
                     }
                     VStack(alignment: .leading, spacing: -8) {
-                        Text(String(format: "%0.2f",  traning.activeEnergyBurned))
+                        Text(String(traning.calories))
                             .font(.custom("MonomaniacOne-Regular", size: 60))
                             .foregroundStyle(.white)
                             .multilineTextAlignment(.leading)
                         
-                        Text("Калории")
+                        Text("Калории (ккал)")
                             .foregroundStyle(.white.opacity(0.5))
                             .multilineTextAlignment(.leading)
                     }
