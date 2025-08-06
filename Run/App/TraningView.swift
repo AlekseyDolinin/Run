@@ -1,13 +1,12 @@
 import SwiftUI
 import Voyager
-import CoreLocation
 
 struct TraningView: View {
     
     @EnvironmentObject var router: Router<AppRoute>
-    @State private var vm = ViewModel()
         
     @State private var traning = Traning()
+    @State private var showAlertStopTracking = false
     
     var body: some View {
         ZStack {
@@ -17,9 +16,8 @@ struct TraningView: View {
             VStack(alignment: .leading, spacing: 100) {
                 TraningDataView(traning: traning)
                 HStack(alignment: .center, spacing: 40) {
-                    if vm.stateTracking == .tracking {
+                    if traning.stateTracking == .tracking {
                         Button(action: {
-                            vm.stateTracking = .paused
                             traning.pause()
                         }) {
                             Image(systemName: "pause.fill").font(.system(size: 36))
@@ -29,9 +27,9 @@ struct TraningView: View {
                         .background(.white)
                         .cornerRadius(16)
                     }
-                    if vm.stateTracking == .paused {
+                    if traning.stateTracking == .paused {
                         Button(action: {
-                            vm.showAlertStopTracking = true
+                            showAlertStopTracking.toggle()
                         }) {
                             Image(systemName: "stop.circle")
                                 .fontWeight(.light)
@@ -41,7 +39,6 @@ struct TraningView: View {
                                 .opacity(0.75)
                         }
                         Button(action: {
-                            vm.stateTracking = .tracking
                             traning.resume()
                         }) {
                             Image(systemName: "play.fill").font(.system(size: 38))
@@ -71,10 +68,10 @@ struct TraningView: View {
         .onFirstAppear {
             traning.start()
         }
-        .alert("Завершить тренировку?", isPresented: $vm.showAlertStopTracking) {
+        .alert("Завершить тренировку?", isPresented: $showAlertStopTracking) {
             Button( "Отмена", role: .cancel) { }
             Button( "Завершить", role: .destructive) {
-                traning.stop()
+                traning.saveTraning()
                 router.updateRoot(.statistic)
                 router.present(.traningDetail)
             }
@@ -84,16 +81,4 @@ struct TraningView: View {
 
 #Preview {
     TraningView()
-}
-
-
-extension TraningView {
-    
-    @Observable
-    class ViewModel {
-        
-        var showAlertStopTracking = false
-        var stateTracking: TrackingState = .tracking
-        
-    }
 }

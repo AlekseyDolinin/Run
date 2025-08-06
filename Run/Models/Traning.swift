@@ -1,10 +1,14 @@
 import Foundation
+import Combine
+import SwiftData
 
+//@Model
+@Observable
 class Traning {
     
     var startDate: Date
     var finishDate: Date?
-    @Published var duration: Int
+    var duration: Int
     var stateTracking: TrackingState
     var stepCount: Int
     var heartRateAverage: Double
@@ -55,8 +59,10 @@ extension Traning {
     func pause() {
         print("PAUSE")
         timer.invalidate()
+        finishDate = Date.now
         stateTracking = .paused
         LocationManager.shared.manager.stopUpdatingLocation()
+        
     }
     
     func resume() {
@@ -64,17 +70,6 @@ extension Traning {
         startTimerTracking()
         stateTracking = .tracking
         LocationManager.shared.manager.startUpdatingLocation()
-    }
-    
-    func stop() {
-        print("STOP")
-        Task(priority: .userInitiated) {
-            await saveTraning()
-        }
-        timer.invalidate()
-        timer = nil
-        duration = 0
-        LocationManager.shared.manager.stopUpdatingLocation()
     }
     
     private func startTimerTracking() {
@@ -126,8 +121,9 @@ extension Traning {
         calories = Int(HealthKitManager.shared.bodyMass * distance_km)
     }
     
-    private func saveTraning() async {
+    func saveTraning() {
         print("saveTraning")
+        
     }
 }
 
