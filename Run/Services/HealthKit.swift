@@ -119,12 +119,12 @@ extension HealthKitManager {
             options: options
         ) { (query, result, error) in
             if error != nil {
-                print("---------------------------")
-                print(identifier)
-                print(query)
-                print(result)
-                print(error)
-                print("---------------------------")
+//                print("---------------------------")
+//                print(identifier)
+//                print(query)
+//                print(result)
+//                print(error)
+//                print("---------------------------")
             }
             self.parseResultStatisticsQuery(
                 result,

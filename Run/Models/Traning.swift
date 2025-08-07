@@ -6,40 +6,17 @@ import SwiftData
 @Observable
 class Traning {
     
-    var startDate: Date
-    var finishDate: Date?
-    var duration: Int
-    var stateTracking: TrackingState
-    var stepCount: Int
-    var heartRateAverage: Double
-    var distance_km: Double
-    var tempAverage: Double
-    var speedAverage: Double
-    var calories: Int
-    
-    init(
-        startDate: Date = Date.now,
-        finishDate: Date? = nil,
-        duration: Int = 0,
-        stateTracking: TrackingState = .paused,
-        stepCount: Int = 0,
-        heartRateAverage: Double = 0,
-        distance_km: Double = 0,
-        tempAverage: Double = 0,
-        speedAverage: Double = 0,
-        calories: Int = 0
-    ) {
-        self.startDate = startDate
-        self.finishDate = finishDate
-        self.duration = duration
-        self.stateTracking = stateTracking
-        self.stepCount = stepCount
-        self.heartRateAverage = heartRateAverage
-        self.distance_km = distance_km
-        self.tempAverage = tempAverage
-        self.speedAverage = speedAverage
-        self.calories = calories
-    }
+    var id: String = UUID().uuidString
+    var startDate: Date = Date.now
+    var finishDate: Date? = nil
+    var duration: Int = 0
+    var stateTracking: TrackingState = .paused
+    var stepCount: Int = 0
+    var heartRateAverage: Double = 0
+    var distance_km: Double = 0
+    var tempAverage: Double = 0
+    var speedAverage: Double = 0
+    var calories: Int = 0
     
     private var timer: Timer!
     private var periodUpdate = 10
@@ -62,7 +39,6 @@ extension Traning {
         finishDate = Date.now
         stateTracking = .paused
         LocationManager.shared.manager.stopUpdatingLocation()
-        
     }
     
     func resume() {
@@ -97,8 +73,12 @@ extension Traning {
     private func updateTemp() {
         if duration % periodUpdate != 0 { return }
         let timingTrackingInMinutes = Double(duration) / 60.0
-        tempAverage = timingTrackingInMinutes / distance_km
-        print("tempAverage: \(tempAverage)")
+        tempAverage = timingTrackingInMinutes / distance_km        
+        
+        print("duration: \(duration)")
+        print("timingTrackingInMinutes: \(timingTrackingInMinutes)")
+        print("distance_km: \(distance_km)")
+        print("-----------")
     }
     
     private func updateSpeed() {
@@ -108,7 +88,6 @@ extension Traning {
         } else {
             speedAverage = 0
         }
-        print("speedAverage: \(speedAverage)")
     }
     
     private func updateCalories() {
@@ -123,7 +102,7 @@ extension Traning {
     
     func saveTraning() {
         print("saveTraning")
-        
+        dump(self)
     }
 }
 
